@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Komentar;
+use App\Models\Laporan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class KomentarController extends Controller
 {
@@ -26,9 +28,21 @@ class KomentarController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Laporan $laporan)
     {
-        //
+        // Validation
+        $request->validate([
+            'isi_komentar' => 'required|string|max:1000',
+        ]);
+
+        // Store Komentar using relation to automatically fill the laporan_id
+        $laporan->komentars()->create([
+            'isi_komentar' => $request->isi_komentar,
+            'id_user' => Auth::id(), 
+        ]);
+
+        // TODO: define the redirect route according to frontend inside views/
+        return redirect()->route('laporan.show', $laporan->id)->with('status', 'Komentar berhasil ditambahkan!');
     }
 
     /**
@@ -60,6 +74,13 @@ class KomentarController extends Controller
      */
     public function destroy(Komentar $komentar)
     {
-        //
+        // Validate that the user who delete the komentar is the owner of the komentar
+        if ($komentar->id_user !== Auth::id()) {
+            abort(403, 'Anda tidak memiliki akses untuk menghapus komentar ini.');
+        }
+
+        $komentar->delete();
+
+        
     }
 }
