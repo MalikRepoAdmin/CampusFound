@@ -1,0 +1,160 @@
+ :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-light: #eff6ff;
+            --slate-50: #f8fafc;
+            --slate-100: #f1f5f9;
+            --slate-200: #e2e8f0;
+            --slate-400: #94a3b8;
+            --slate-500: #64748b;
+            --slate-700: #334155;
+            --slate-900: #0f172a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            background-image: radial-gradient(var(--slate-200) 0.5px, transparent 0.5px);
+            background-size: 30px 30px;
+            color: var(--slate-700);
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 24px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--slate-900);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span { color: var(--primary); }
+
+        .nav-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-login {
+            text-decoration: none;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--slate-900);
+            transition: 0.3s;
+        }
+
+        .btn-register {
+            text-decoration: none;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 700;
+            background: var(--slate-900);
+            color: white;
+            border-radius: 12px;
+            transition: 0.3s;
+        }
+
+        .btn-register:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 8% 60px;
+            text-align: center;
+        }
+
+        .hero-content { max-width: 900px; }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 99px;
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            color: var(--slate-900);
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+        }
+
+        .hero-title span {
+            background: linear-gradient(to right, var(--primary), #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-p {
+            font-size: 18px;
+            color: var(--slate-500);
+            line-height: 1.6;
+            margin-bottom: 40px;
+            max-width: 650px;
+            margin-inline: auto;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-main {
+            padding: 18px 48px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 16px;
+            font-weight: 700;
+            box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.2);
+            transition: 0.3s;
+        }
+
+        .btn-main:hover {
+            background: var(--primary-hover);
+            transform: translateY(-3px);
+        }
+
+
+        @media (max-width: 640px) {
+            nav { padding: 20px 5%; }
+            .hero-title { font-size: 2.5rem; }
+            .btn-login { display: none; }
+        }
