@@ -12,7 +12,7 @@ class BarangController extends Controller
      */
     public function index()
     {
-        //
+        // No need index function because barang is managed in LaporanController
     }
 
     /**
@@ -20,7 +20,7 @@ class BarangController extends Controller
      */
     public function create()
     {
-        //
+        // No need create function because barang is managed in LaporanController
     }
 
     /**
@@ -28,7 +28,7 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // No need store function because barang is managed in LaporanController
     }
 
     /**
@@ -36,7 +36,7 @@ class BarangController extends Controller
      */
     public function show(Barang $barang)
     {
-        //
+        // No need show function because barang is managed in LaporanController
     }
 
     /**
