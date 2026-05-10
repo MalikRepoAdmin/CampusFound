@@ -13,18 +13,23 @@ class Laporan extends Model
         'kategori_laporan',
         'status_laporan',
         'deskripsi',
+
         'id_user',
     ];
 
 
-    public function user()
+    public function users()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'is_user');
     }
 
-    public function barang()
+    public function barangs()
     {
-        // TODO: relation one-to-many into 'Barang' Model
-        return $this->hasMany(Barang::class);
+        return $this->hasMany(Barang::class, 'id_laporan');
+    }
+
+    public function komentars()
+    {
+        return $this->hasMany(Komentar::class, 'id_laporan');
     }
 }
