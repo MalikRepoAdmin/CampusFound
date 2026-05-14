@@ -35,10 +35,10 @@ class KomentarController extends Controller
             'isi_komentar' => 'required|string|max:1000',
         ]);
 
-        // Store Komentar using relation to automatically fill the laporan_id
+        // Store Komentar using relation to automatically fill the id_laporan
         $laporan->komentars()->create([
             'isi_komentar' => $request->isi_komentar,
-            'id_user' => Auth::id(), 
+            'fk_id_user' => Auth::id(), 
         ]);
 
         // TODO: define the redirect route according to frontend inside views/
@@ -75,7 +75,7 @@ class KomentarController extends Controller
     public function destroy(Komentar $komentar)
     {
         // Validate that the user who delete the komentar is the owner of the komentar
-        if ($komentar->id_user !== Auth::id()) {
+        if ($komentar->fk_id_user !== Auth::id()) {
             abort(403, 'Anda tidak memiliki akses untuk menghapus komentar ini.');
         }
 

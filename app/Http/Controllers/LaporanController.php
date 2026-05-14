@@ -59,7 +59,7 @@ class LaporanController extends Controller
                 'status_laporan' => 'active',
                 'deskripsi' => $request->deskripsi,
 
-                'id_user' => Auth::id(),
+                'fk_id_user' => Auth::id(),
             ]);
 
             // foto_barang is optional, if it exist and not null then store into storage and get the path
@@ -102,14 +102,14 @@ class LaporanController extends Controller
     public function edit(Laporan $laporan)
     {
         // Validate that the user who edit the laporan is the owner of the laporan
-        if ($laporan->id_user !== Auth::id()) {
+        if ($laporan->fk_id_user !== Auth::id()) {
             abort(403, 'Anda Tidak Memiliki Akses ke Laporan ini');
         }
 
 
         // laporan.edit means it looking for views/laporan/edit.blade.php
         // TODO: define the view route according to frontend inside views/
-        return view('laporan.edit', compact('laporan'));
+        return view('items.editBarang', compact('laporan'));
     }
 
     /**
@@ -118,7 +118,7 @@ class LaporanController extends Controller
     public function update(Request $request, Laporan $laporan)
     {
         // Validate that the user who update the laporan is the owner of the laporan
-        if ($laporan->id_user !== Auth::id()) {
+        if ($laporan->fk_id_user !== Auth::id()) {
             abort(403, 'Anda Tidak Memiliki Akses ke Laporan ini');
         }
 
@@ -132,7 +132,7 @@ class LaporanController extends Controller
         $laporan->update($validated);
 
         // TODO: define the redirect route according to frontend inside views/
-        return redirect()->route('laporan.show', $laporan->id)->with('status', 'Laporan Berhasil diperbarui!');
+        return redirect()->route('items.detail', $laporan->id)->with('status', 'Laporan Berhasil diperbarui!');
     }
 
     /**
@@ -141,7 +141,7 @@ class LaporanController extends Controller
     public function updateStatus(Request $request, Laporan $laporan)
     {
         // Validate that the user who update the laporan is the owner of the laporan
-        if ($laporan->id_user !== Auth::id()) {
+        if ($laporan->fk_id_user !== Auth::id()) {
             abort(403, 'Anda Tidak Memiliki Akses ke Laporan ini');
         }
 
@@ -154,7 +154,7 @@ class LaporanController extends Controller
         $laporan->update($validated);
 
         // TODO: define the redirect route according to frontend inside views/
-        return redirect()->route('laporan.show', $laporan->id)->with('status', 'Status Laporan Berhasil diperbarui!');
+        return redirect()->route('items.detail', $laporan->id)->with('status', 'Status Laporan Berhasil diperbarui!');
     }
 
     /**
