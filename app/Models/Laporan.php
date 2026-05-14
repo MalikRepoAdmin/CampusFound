@@ -7,29 +7,29 @@ use Illuminate\Database\Eloquent\Model;
 class Laporan extends Model
 {
     
-    protected $table = 'Laporan';
+    protected $table = 'laporan';
 
     protected $fillable = [
         'kategori_laporan',
         'status_laporan',
         'deskripsi',
 
-        'id_user',
+        'fk_id_user',
     ];
 
 
     public function users()
     {
-        return $this->belongsTo(User::class, 'is_user');
+        return $this->belongsTo(User::class, 'fk_id_user');
     }
 
     public function barangs()
     {
-        return $this->hasMany(Barang::class, 'id_laporan');
+        return $this->hasMany(Barang::class, 'fk_id_laporan');
     }
 
     public function komentars()
     {
-        return $this->hasMany(Komentar::class, 'id_laporan');
+        return $this->hasMany(Komentar::class, 'fk_id_laporan');
     }
 }

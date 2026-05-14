@@ -32,11 +32,11 @@ class User extends Authenticatable
 
     public function laporans()
     {
-        return $this->hasMany(Laporan::class, 'id_user');
+        return $this->hasMany(Laporan::class, 'fk_id_user');
     }
 
     public function komentars()
     {
-        return $this->hasMany(Komentar::class, 'id_user');
+        return $this->hasMany(Komentar::class, 'fk_id_user');
     }
 }
