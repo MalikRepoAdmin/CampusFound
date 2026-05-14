@@ -16,7 +16,7 @@ return new class extends Migration
         $table->string('nama_barang');
         $table->string('lokasi')->nullable();
         $table->enum('kategori_barang', ['tas/dompet', 'elektronik', 'alat tulis', 'dokumen', 'kartu identitas', 'lainnya']);
-        $table->binary('foto_barang')->nullable(); // blob
+        $table->string('foto_barang')->nullable(); // string untuk menyimpan path
         
         $table->unsignedBigInteger('fk_id_laporan');
         $table->foreign('fk_id_laporan')->references('id_laporan')->on('laporan')->onDelete('cascade');
