@@ -25,6 +25,7 @@ class AuthController extends Controller
     {
         $request->validate([
             'email' => 'required|email|unique:users', // email must be unique, 'users' is the table name
+            'nama' => 'required',
 
             // 'confirmed' option is required so user can confirm their password to ensure they remember their password
             // TODO: 'confirmed' option needs 'password_confirmation' on frontend. for example <input type="password" name="password_confirmation">
@@ -35,6 +36,7 @@ class AuthController extends Controller
         // Store  the user to database
         $user = User::create([
             'email' => $request->email,
+            'nama' => $request->nama,
             'password' => $request->password,
             'no_hp' => $request->no_hp,
         ]);
@@ -43,7 +45,7 @@ class AuthController extends Controller
         Auth::login($user);
 
         // TODO: define the redirect route according to frontend inside views/
-        return redirect()->route('laporan.index');
+        return redirect()->route('items.beranda');
     }
 
     /**
@@ -70,7 +72,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             // TODO: define the redirect route according to frontend inside views/
-            return redirect()->route('laporan.index'); 
+            return redirect()->route('items.beranda'); 
         } 
         else {
             return back()->withErrors([
