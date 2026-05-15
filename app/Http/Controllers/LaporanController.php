@@ -132,7 +132,7 @@ class LaporanController extends Controller
         $laporan->update($validated);
 
         // TODO: define the redirect route according to frontend inside views/
-        return redirect()->route('items.detail', $laporan->id)->with('status', 'Laporan Berhasil diperbarui!');
+        return redirect()->route('items.detail', $laporan->id_laporan)->with('status', 'Laporan Berhasil diperbarui!');
     }
 
     /**
@@ -154,7 +154,7 @@ class LaporanController extends Controller
         $laporan->update($validated);
 
         // TODO: define the redirect route according to frontend inside views/
-        return redirect()->route('items.detail', $laporan->id)->with('status', 'Status Laporan Berhasil diperbarui!');
+        return redirect()->route('items.detail', $laporan->id_laporan)->with('status', 'Status Laporan Berhasil diperbarui!');
     }
 
     /**

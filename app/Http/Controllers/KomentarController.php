@@ -42,7 +42,7 @@ class KomentarController extends Controller
         ]);
 
         // TODO: define the redirect route according to frontend inside views/
-        return redirect()->route('laporan.show', $laporan->id)->with('status', 'Komentar berhasil ditambahkan!');
+        return redirect()->route('laporan.show', $laporan->id_laporan)->with('status', 'Komentar berhasil ditambahkan!');
     }
 
     /**
