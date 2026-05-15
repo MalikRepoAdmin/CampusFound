@@ -10,12 +10,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password', 'no_hp'])]
+#[Fillable(['nama', 'email', 'password', 'no_hp'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
+
+    // Custom name for id (primary key)
+    protected $primaryKey = 'id_user';
 
     /**
      * Get the attributes that should be cast.
