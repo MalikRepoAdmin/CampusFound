@@ -44,8 +44,8 @@ class LaporanController extends Controller
             'kategori_barang' => 'required',
         ]);
 
-        // Validation: IF the kategori_laporan is 'penemuan' then lokasi must be included
-        if ($request['kategori_laporan'] === 'penemuan') {
+        // Validation: IF the kategori_laporan is 'found' then lokasi must be included
+        if ($request['kategori_laporan'] === 'found') {
             $request->validate([
                 'lokasi' => 'required'
             ]);
@@ -124,7 +124,7 @@ class LaporanController extends Controller
 
 
         $validated = $request->validate([
-            'kategori_laporan' => 'sometimes|in:kehilangan,penemuan',
+            'kategori_laporan' => 'sometimes|in:lost,found',
             'deskripsi' => 'sometimes|string',
         ]);
 
