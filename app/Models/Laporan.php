@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Laporan extends Model
 {
-    
+    use HasFactory;
+
     protected $table = 'laporan';
     protected $primaryKey = 'id_laporan';
 
@@ -26,7 +28,7 @@ class Laporan extends Model
 
     public function barangs()
     {
-        return $this->hasMany(Barang::class, 'fk_id_laporan');
+        return $this->hasOne(Barang::class, 'fk_id_laporan');
     }
 
     public function komentars()
