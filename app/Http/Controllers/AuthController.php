@@ -45,7 +45,7 @@ class AuthController extends Controller
         Auth::login($user);
 
         // TODO: define the redirect route according to frontend inside views/
-        return redirect()->route('items.beranda');
+        return redirect()->route('beranda');
     }
 
     /**
@@ -72,7 +72,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             // TODO: define the redirect route according to frontend inside views/
-            return redirect()->route('items.beranda'); 
+            return redirect()->route('beranda'); 
         } 
         else {
             return back()->withErrors([

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\KomentarController;
 use App\Http\Controllers\LaporanController;
 
 Route::get('/', function () {
@@ -44,12 +45,13 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-Route::get('/register', [AuthController::class, 'register']);
+Route::post('/register', [AuthController::class, 'register']);
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
 /**
- * Resources Routes
+ * Resources Routes (for unit test)
  */
 Route::resource('laporan', \App\Http\Controllers\LaporanController::class);
+Route::resource('komentar', \App\Http\Controllers\KomentarController::class);
