@@ -81,6 +81,7 @@ class KomentarController extends Controller
 
         $komentar->delete();
 
-        
+        // TODO: define the redirect route according to frontend inside views/
+        return redirect()->back()->with('status', 'Komentar berhasil dihapus!');
     }
 }
