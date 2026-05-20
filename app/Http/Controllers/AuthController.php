@@ -31,6 +31,11 @@ class AuthController extends Controller
             // TODO: 'confirmed' option needs 'password_confirmation' on frontend. for example <input type="password" name="password_confirmation">
             'password' => 'required|min:6|confirmed', 
             'no_hp' => 'required'
+        ], [
+            // Error response
+            'email.unique' => 'Email ini sudah terdaftar, silakan gunakan email lain.',
+            'password.confirmed' => 'Konfirmasi password tidak cocok.',
+            'required' => 'Kolom ini wajib diisi dan tidak boleh kosong.',
         ]);
 
         // Store  the user to database
@@ -43,9 +48,10 @@ class AuthController extends Controller
 
         // Automatically call login method after successfully register
         Auth::login($user);
+        $request->session()->regenerate();
 
         // TODO: define the redirect route according to frontend inside views/
-        return redirect()->route('beranda');
+        return redirect()->intended(route('beranda'));
     }
 
     /**
@@ -72,13 +78,13 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             // TODO: define the redirect route according to frontend inside views/
-            return redirect()->route('beranda'); 
+            return redirect()->intended(route('beranda')); 
         } 
-        else {
-            return back()->withErrors([
-                'email' => 'Email atau password salah.',
-            ]);
-        }
+        
+        return back()->withErrors([
+            'email' => 'Email atau password salah.',
+        ])->onlyInput('email');
+        
     }
 
     /**
