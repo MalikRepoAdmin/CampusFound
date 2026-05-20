@@ -42,7 +42,8 @@
             background: white;
             width: 100%;
             max-width: 448px;
-            padding: 40px 24px;
+            height: 600px;
+            padding: 30px 24px;
             border-radius: 32px;
             text-align: center;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
@@ -55,8 +56,8 @@
         }
 
         .icon-container {
-            width: 96px;
-            height: 96px;
+            width: 85px;
+            height: 85px;
             background-color: #dcfce7;
             color: #16a34a;
             border-radius: 50%;
@@ -67,8 +68,8 @@
             box-shadow: 0 10px 15px -3px rgba(220, 252, 231, 0.5);
         }
 
-        h1 { font-size: 1.875rem; font-weight: 800; color: #0f172a; margin-bottom: 16px; }
-        .description { color: #64748b; line-height: 1.625; margin-bottom: 40px; font-size: 1rem; }
+        h2 {  font-weight: 800; color: #0f172a; margin-bottom: 16px; }
+        .description { color: #64748b; line-height: 1.625; margin-bottom: 40px; font-size: 16px ; }
 
         .steps-card {
             background: #ffffff;
@@ -99,7 +100,7 @@
 
         .btn-primary {
             display: block; width: 100%; background: #0f172a; color: white;
-            padding: 16px; border-radius: 16px; font-weight: 700; font-size: 14px;
+            padding: 14px; border-radius: 16px; font-weight: 700; font-size: 14px;
             text-decoration: none; border: none; transition: all 0.2s; cursor: pointer;
             margin-bottom: 12px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
@@ -123,16 +124,16 @@
                 <i data-lucide="party-popper" style="width: 48px; height: 48px;"></i>
             </div>
 
-            <h1>Klaim Berhasil Dikirim!</h1>
+            <h2>Klaim Berhasil Dikirim!</h2>
             <p class="description">
-                Laporan klaim kamu sudah masuk ke sistem. Penemu atau Admin akan memverifikasi dalam waktu 1x24 jam.
+                Laporan klaim kamu sudah masuk ke sistem. Penemu akan memverifikasi dalam waktu 1x24 jam.
             </p>
 
             <div class="steps-card">
                 <h4 class="steps-title">Langkah Selanjutnya:</h4>
                 <div class="step-item">
                     <div class="step-number">1</div>
-                    <p class="step-text">Pantau status klaim di menu <strong>"Aktivitas Saya"</strong>.</p>
+                    <p class="step-text">Pantau status klaim di menu <strong>"Profile"</strong>.</p>
                 </div>
                 <div class="step-item" style="margin-bottom: 0;">
                     <div class="step-number">2</div>

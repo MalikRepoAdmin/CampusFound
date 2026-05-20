@@ -3,7 +3,6 @@
 @section('title', 'CampusFound | Beranda')
 
 @section('content')
-
     <section class="hero-section">
         <div class="hero-text">
             <div class="badge-new">
@@ -26,7 +25,6 @@
             </div>
         </div>
 
-
         <div class="hero-widget-container">
             <div class="widget-card floating">
                 <div class="widget-icon">
@@ -34,7 +32,7 @@
                 </div>
                 <div class="widget-stats">
                     <h3>84%</h3>
-                    <p>Barang Kembali ke Pemiliknya</p>
+                    <p>Barang Kembali</p>
                 </div>
                 <div class="widget-users">
                     <div class="avatar-stack">
@@ -46,7 +44,6 @@
             </div>
         </div>
     </section>
-
 
     <div class="stats-grid">
         <div class="stat-card">
@@ -78,30 +75,16 @@
         </div>
     </div>
 
-    <!-- Section Title & Filter -->
     <div class="section-header">
         <div class="title-area">
             <h2>Temuan Terbaru</h2>
             <p>Menampilkan barang-barang yang baru saja ditemukan di sekitar area kampus hari ini.</p>
         </div>
-
-        <div class="filter-group">
-            <div class="select-wrapper">
-                <i data-lucide="layers" class="icon-left blue"></i>
-                <select class="select-custom">
-                    <option value="">Semua Kategori</option>
-                    <option value="1">Elektronik</option>
-                    <option value="2">Dokumen & Kartu</option>
-                </select>
-            </div>
-            <div class="divider"></div>
-            <div class="select-wrapper">
-                <i data-lucide="arrow-down-up" class="icon-left grey"></i>
-                <select class="select-custom">
-                    <option value="new">Terbaru</option>
-                    <option value="old">Terlama</option>
-                </select>
-            </div>
+        <div class="lihat-semua">
+            <a href="/jelajahi" class="btn-lihat-semua">
+                Lihat Semua
+                <i data-lucide="chevron-right"></i>
+            </a>
         </div>
     </div>
 
@@ -127,30 +110,9 @@
                 </div>
             </div>
         </div>
-
-        <div class="card">
-            <div class="card-image">
-                <img src="https://images.unsplash.com/photo-1627384113743-6bd5a479fffd?auto=format&fit=crop&q=80&w=800" alt="Tumbler">
-                <span class="category-tag">Aksesoris</span>
-            </div>
-            <div class="card-body">
-                <h4>Tumbler Hydroflask</h4>
-                <div class="location">
-                    <i data-lucide="map-pin"></i> Kantin Pusat
-                </div>
-                <div class="card-footer">
-                    <div class="user">
-                        <div class="user-avatar">R</div>
-                        <span>Rian S.</span>
-                    </div>
-                    <button class="btn-detail">
-                        DETAIL <i data-lucide="chevron-right"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
     </div>
+
     <a href="https://wa.me/6285708935152?text=Halo%20CampusFound,%20saya%20butuh%20bantuan." class="fab-wa" target="_blank">
-    <i data-lucide="message-circle"></i>
-</a>
+        <i data-lucide="message-circle"></i>
+    </a>
 @endsection
