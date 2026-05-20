@@ -15,6 +15,7 @@ class CampusFoundSeeder extends Seeder
     {
         // 1. Seed User
         $userId = DB::table('users')->insertGetId([
+            'nama' => 'AsepMbg',
             'email' => 'asep@mbg.id',
             'password' => Hash::make('password123'),
             'no_hp' => '08123456789',
