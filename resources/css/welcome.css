@@ -26,7 +26,6 @@
             overflow-x: hidden;
         }
 
-        /* Navbar */
         nav {
             position: fixed;
             top: 0;
@@ -80,7 +79,6 @@
             transform: translateY(-2px);
         }
 
-        /* Hero Section */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -151,7 +149,6 @@
             background: var(--primary-hover);
             transform: translateY(-3px);
         }
-
 
         @media (max-width: 640px) {
             nav { padding: 20px 5%; }
