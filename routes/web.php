@@ -8,9 +8,6 @@ use App\Http\Controllers\LaporanController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/beranda', function () {
-    return view('items.beranda');
-})->name('beranda');
 Route::get('/success', function () {
     return view('items.success');
 })->name('success');
@@ -26,6 +23,9 @@ Route::get('/barang/{id}', function ($id) {
 Route::get('/profile', function () {
     return view('items.profile');
 })->name('profile');
+Route::get('/tentang-kami', function () {
+    return view('items.tentangKami');
+})->name('tentang-kami');
 
 /**
  * Edit Barang Routes
@@ -39,6 +39,15 @@ Route::middleware('auth')->group(function () {
 
 
 /**
+ * Pages/items Routes
+ */ 
+Route::middleware('auth')->group(function (){
+
+    Route::get('/beranda', function () { return view('items.beranda'); })->name('beranda');
+});
+
+
+/**
  * Auth Routes
  */ 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -47,7 +56,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
 
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
 /**
