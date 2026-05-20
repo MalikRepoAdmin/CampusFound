@@ -1,16 +1,21 @@
 <header class="navbar">
     <div class="container nav-content">
-        <a href="/" class="logo">
+        <a href="/beranda" class="logo">
             <div class="logo-icon">
-                <i data-lucide="map-pin-check"></i>
+                <i data-lucide="compass"></i>
             </div>
             <span>Campus<span class="text-blue">Found.</span></span>
         </a>
 
+        <input type="checkbox" id="menu-toggle-chk" class="nav-checkbox-gate">
+        <label for="menu-toggle-chk" class="menu-toggle" aria-label="Toggle Navigation">
+            <i data-lucide="menu"></i>
+        </label>
+
         <nav class="nav-links">
             <a href="{{ route('beranda') }}">Beranda</a>
             <a href="{{ route('jelajahi') }}">Jelajahi</a>
-            <a href="#">Tentang Kami</a>
+            <a href="{{ route('tentang-kami') }}">Tentang Kami</a>
         </nav>
 
         <div class="nav-actions">
@@ -19,22 +24,22 @@
                 <span>Lapor Barang</span>
             </a>
 
-
             <div class="profile-section">
                 <div class="profile-dropdown">
-                    <button class="profile-trigger">
+                    <input type="checkbox" id="profile-toggle-chk" class="nav-checkbox-gate">
+                    <label for="profile-toggle-chk" class="profile-trigger">
                         <img src="https://ui-avatars.com/api/?name=User" alt="Profile" class="profile-img">
                         <i data-lucide="chevron-down" class="icon-sm"></i>
-                    </button>
+                    </label>
 
                     <div class="dropdown-menu">
-                        <a href="/profile"><i data-lucide="user"></i> Profil Saya</a>
-                        <hr>
-                        <a href="/logout" class="text-danger"><i data-lucide="log-out"></i> Keluar</a>
+                        <a href="/profile"><i data-lucide="user" class="icon-sm"></i> Profil Saya</a>
+                        <hr class="dropdown-divider">
+                        <a href="/logout" class="text-danger"><i data-lucide="log-out" class="icon-sm"></i> Keluar</a>
                     </div>
                 </div>
-
             </div>
+
         </div>
     </div>
 </header>

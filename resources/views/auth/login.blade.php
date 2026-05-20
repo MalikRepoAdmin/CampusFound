@@ -31,10 +31,16 @@
                 <h1>Sign In</h1>
                 <p class="subtitle">Gunakan portal mahasiswa untuk masuk.</p>
 
-                <form action="#" method="POST">
+                <form action="{{ route('login') }}" method="POST">
+                    @csrf
+
                     <div class="form-group">
                         <label>Email Student</label>
                         <input type="email" name="email" required placeholder="nim@student.pnm.ac.id" class="input-minimal">
+
+                        @error('email')
+                            <span class="text-danger" style="color: red; font-size: 12px;">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <div class="form-group">
@@ -45,9 +51,9 @@
                         <input type="password" name="password" required placeholder="••••••••" class="input-minimal">
                     </div>
 
-                   <a href="{{ route('beranda') }}" class="btn-dark"  >
+                   <button type="submit" class="btn-dark"  >
                         Masuk Sekarang
-                    </a>
+                    </button>
                 </form>
 
                 <div class="card-footer">
