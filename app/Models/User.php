@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Override;
 
 #[Fillable(['nama', 'email', 'password', 'no_hp'])]
 #[Hidden(['password', 'remember_token'])]
@@ -41,5 +42,11 @@ class User extends Authenticatable
     public function komentars()
     {
         return $this->hasMany(Komentar::class, 'fk_id_user');
+    }
+
+    #[Override]
+    public function getAuthIdentifierName()
+    {
+        return 'id_user';
     }
 }
