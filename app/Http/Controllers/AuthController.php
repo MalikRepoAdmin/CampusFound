@@ -14,7 +14,6 @@ class AuthController extends Controller
      */
     public function showRegister()
     {
-        // TODO: define the view route according to frontend inside views/
         return view('auth.register');
     }
 
@@ -50,7 +49,6 @@ class AuthController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        // TODO: define the redirect route according to frontend inside views/
         return redirect()->intended(route('beranda'));
     }
 
@@ -59,7 +57,6 @@ class AuthController extends Controller
      */
     public function showLogin()
     {
-        // TODO: define the view route according to frontend inside views/
         return view('auth.login');
     }
 
@@ -77,7 +74,6 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            // TODO: define the redirect route according to frontend inside views/
             return redirect()->intended(route('beranda')); 
         } 
         
