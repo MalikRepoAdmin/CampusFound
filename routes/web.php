@@ -41,9 +41,12 @@ Route::middleware('auth')->group(function (){
 
     Route::get('/jelajahi', [LaporanController::class, 'index'])->name('jelajahi');
 
-    // 'laporan' parameter name is exactly the same as parameter name in show() method
+    // 'id' parameter name is exactly the same as parameter name in show() method
     Route::get('/laporan/{id}', [LaporanController::class, 'show'])->name('laporan.detail');
     Route::post('/laporan/{id}', [KomentarController::class, 'store'])->name('komentar.store');
+
+    // Delete Komentar
+    Route::delete('/laporan/{id}', [KomentarController::class, 'destroy'])->name('komentar.delete');
 });
 
 

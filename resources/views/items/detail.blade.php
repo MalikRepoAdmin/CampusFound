@@ -147,6 +147,22 @@
                                         {{ $komentar->created_at->diffForHumans() }}
                                     </span>
                                 </div>
+
+                                @if(auth()->check() && $komentar->fk_id_user === auth()->id())
+                                    {{-- Form menembak ke ID Laporan --}}
+                                    <form action="{{ route('komentar.delete', $laporan->id_laporan) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus komentar ini?')" style="display: inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        
+                                        {{-- Parameter Baru: Selundupkan ID Komentar di dalam input tersembunyi --}}
+                                        <input type="hidden" name="id_komentar" value="{{ $komentar->id_komentar }}">
+
+                                        <button type="submit" style="background: none; border: none; color: #ef4444; cursor: pointer; padding: 0; display: flex; align-items: center;" title="Hapus Komentar">
+                                            <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+                                        </button>
+                                    </form>
+                                @endif
+
                                 {{-- Teks isi komentar dari database --}}
                                 <p class="comment-text" style="color: #475569; font-size: 14px; margin: 0; line-height: 1.5;">
                                     {{ $komentar->isi_komentar ?? $komentar->komentar }} 

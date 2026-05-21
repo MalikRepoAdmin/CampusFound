@@ -74,16 +74,17 @@ class KomentarController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Komentar $komentar)
+    public function destroy($id)
     {
+        $komentar = \App\Models\Komentar::findOrFail($id);
+
         // Validate that the user who delete the komentar is the owner of the komentar
-        if ($komentar->fk_id_user !== Auth::id()) {
+        if ($komentar->fk_id_user !== \Illuminate\Support\Facades\Auth::id()) {
             abort(403, 'Anda tidak memiliki akses untuk menghapus komentar ini.');
         }
 
         $komentar->delete();
 
-        // TODO: define the redirect route according to frontend inside views/
         return redirect()->back()->with('status', 'Komentar berhasil dihapus!');
     }
 }
