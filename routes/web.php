@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function (){
 
     // 'laporan' parameter name is exactly the same as parameter name in show() method
     Route::get('/laporan/{id}', [LaporanController::class, 'show'])->name('laporan.detail');
+    Route::post('/laporan/{id}', [KomentarController::class, 'store'])->name('komentar.store');
 });
 
 

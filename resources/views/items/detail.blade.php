@@ -1,7 +1,9 @@
 @extends('layouts.app')
-@include('items.success')
+@if(session('success_klaim'))
+    @include('items.success')
+@endif
 
-@section('title', 'CampusFound | Detail Temuan')
+@section('title', 'CampusFound | Detail')
 
 @section('content')
 <main class="content-wrapper">
@@ -108,47 +110,57 @@
         <div class="comment-detail-grid">
             <div class="comment-main-col">
                 <div class="comment-header-main">
-                    <h3 class="comment-title">Diskusi <span>3</span></h3>
+                    {{-- Menampilkan jumlah total komentar asli secara dinamis --}}
+                    <h3 class="comment-title">Diskusi <span>{{ $laporan->komentars->count() }}</span></h3>
                 </div>
 
+                {{-- Form input komentar baru --}}
                 <div class="comment-input-area">
-                    <div class="avatar-user me">U</div>
+                    {{-- Mengambil inisial nama user yang sedang login jika ada --}}
+                    <div class="avatar-user me">
+                        {{ auth()->check() ? Str::substr(auth()->user()->nama, 0, 1) : 'U' }}
+                    </div>
                     <div class="input-wrapper">
-                        <textarea placeholder="Tulis komentar..." rows="1"></textarea>
-                        <button class="btn-send-minimal"><i data-lucide="send"></i></button>
+                        <form action="{{ route('komentar.store', ['id' => $laporan->id_laporan]) }}" method="POST">
+                            @csrf
+
+                            <textarea name="isi_komentar" placeholder="Tulis komentar..." rows="1"></textarea>
+                            <button type="submit" class="btn-send-minimal"><i data-lucide="send"></i></button>
+                        </form>
                     </div>
                 </div>
 
-                <div class="comment-list">
-                    <div class="comment-group" id="comment-1">
-                        <div class="comment-item">
-                            <div class="avatar-user">R</div>
-                            <div class="comment-bubble">
-                                <div class="comment-meta">
-                                    <span class="user-name">Malik</span>
-                                    <span class="comment-time">2 jam lalu</span>
+                <div class="comment-list" style="display: flex; flex-direction: column; gap: 16px; margin-top: 20px;">
+                    @forelse($laporan->komentars as $komentar)
+                        <div class="comment-item" style="display: flex; gap: 12px; align-items: flex-start;">
+                            {{-- Inisial nama pemberi komentar --}}
+                            <div class="avatar-user" style="flex-shrink: 0;">
+                                {{ isset($komentar->users) ? Str::substr($komentar->users->nama, 0, 1) : '?' }}
+                            </div>
+                            
+                            <div class="comment-bubble" style="background-color: #f8fafc; padding: 12px 16px; border-radius: 12px; flex-grow: 1;">
+                                <div class="comment-meta" style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px;">
+                                    <span class="user-name" style="font-weight: 700; color: #1e293b;">
+                                        {{ $komentar->users->nama ?? 'Anonim' }}
+                                    </span>
+                                    <span class="comment-time" style="color: #94a3b8; font-size: 12px;">
+                                        {{ $komentar->created_at->diffForHumans() }}
+                                    </span>
                                 </div>
-                                <p class="comment-text">Mas, apakah adaptornya yang versi 180W?</p>
-                                <button class="btn-reply-action" onclick="showReplyForm(1)">Balas</button>
+                                {{-- Teks isi komentar dari database --}}
+                                <p class="comment-text" style="color: #475569; font-size: 14px; margin: 0; line-height: 1.5;">
+                                    {{ $komentar->isi_komentar ?? $komentar->komentar }} 
+                                    {{-- Sesuaikan nama kolom di atas jika nama kolom teks Anda bukan 'isi_komentar' --}}
+                                </p>
                             </div>
                         </div>
-                        <div id="reply-form-container-1" class="reply-form-container"></div>
-
-                        <div class="comment-replies-container">
-                            <div class="comment-item reply">
-                                <div class="avatar-user admin">A</div>
-                                <div class="comment-bubble">
-                                    <div class="comment-meta">
-                                        <span class="user-name">Admin PNM</span>
-                                        <span class="comment-time">1 jam lalu</span>
-                                    </div>
-                                    <p class="comment-text">Bisa langsung cek ke pos keamanan kak.</p>
-                                    <button class="btn-reply-action" onclick="showReplyForm('admin-1')">Balas</button>
-                                </div>
-                            </div>
-                            <div id="reply-form-container-admin-1" class="reply-form-container"></div>
+                    @empty
+                        {{-- Tampilan jika belum ada komentar sama sekali --}}
+                        <div style="text-align: center; padding: 30px; color: #94a3b8; font-size: 14px;">
+                            <i data-lucide="message-square-dashed" style="width: 32px; height: 32px; margin-bottom: 8px; color: #cbd5e1;"></i>
+                            <p style="margin: 0;">Belum ada diskusi. Jadilah yang pertama berkomentar!</p>
                         </div>
-                    </div>
+                    @endforelse
                 </div>
             </div>
 
@@ -169,32 +181,19 @@
             </div>
         </div>
     </section>
+
     <a href="https://wa.me/6285708935152?text=Halo%20CampusFound,%20saya%20butuh%20bantuan." class="fab-wa" target="_blank">
-    <i data-lucide="message-circle"></i>
-</a>
+        <i data-lucide="message-circle"></i>
+    </a>
 </main>
 
-
-
 <script>
-function showReplyForm(commentId) {
-    document.querySelectorAll('.reply-form-container').forEach(c => c.innerHTML = '');
-    const container = document.getElementById(`reply-form-container-${commentId}`);
-    container.innerHTML = `
-        <div class="comment-input-area" style="margin: 8px 0 15px 42px;">
-            <div class="avatar-user me" style="width: 26px; height: 26px; font-size: 10px;">U</div>
-            <div class="input-wrapper">
-                <textarea placeholder="Balas..." rows="1" autofocus style="font-size:12px;"></textarea>
-                <button class="btn-send-minimal"><i data-lucide="send" style="width: 14px;"></i></button>
-            </div>
-            <button onclick="this.parentElement.remove()" style="background:none; border:none; font-size:11px; color:#94a3b8; cursor:pointer; margin-left:8px;">Batal</button>
-        </div>
-    `;
-    lucide.createIcons();
-}
+// Fungsi showReplyForm telah dihapus karena fitur reply dinonaktifkan
 window.toggleModal = function() {
     const modal = document.getElementById('modalKlaim');
-    modal.classList.toggle('active');
+    if (modal) {
+        modal.classList.toggle('active');
+    }
 }
 </script>
 @endsection

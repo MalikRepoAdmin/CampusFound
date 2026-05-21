@@ -28,8 +28,10 @@ class KomentarController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Laporan $laporan)
+    public function store(Request $request, $id)
     {
+        $laporan = Laporan::with(['users', 'barangs', 'komentars.users'])->findOrFail($id);
+
         // Validation
         $request->validate([
             'isi_komentar' => 'required|string|max:1000',
@@ -42,7 +44,7 @@ class KomentarController extends Controller
         ]);
 
         // TODO: define the redirect route according to frontend inside views/
-        return redirect()->route('laporan.show', $laporan->id_laporan)->with('status', 'Komentar berhasil ditambahkan!');
+        return redirect()->route('laporan.detail', $laporan->id_laporan)->with('status', 'Komentar berhasil ditambahkan!');
     }
 
     /**
