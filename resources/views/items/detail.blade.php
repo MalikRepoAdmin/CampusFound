@@ -8,46 +8,100 @@
     <div class="detail-grid">
         <section class="image-section">
             <div class="sticky-container">
-                <div class="image-card">
-                    <img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&q=80&w=1200" alt="Detail Barang">
+                <div class="image-card" style="background-color: #f8fafc; display: flex; align-items: center; justify-content: center; overflow: hidden; min-height: 300px; border-radius: 12px;">
+                    @if(isset($laporan->barangs) && $laporan->barangs->foto_barang)
+                        {{-- MENAMPILKAN FOTO ASLI DARI DATABASE --}}
+                        <img src="{{ asset('storage/' . $laporan->barangs->foto_barang) }}" alt="{{ $laporan->barangs->nama_barang }}">
+                    @else
+                        {{-- MUNCUL JIKA FOTO NULL / KOSONG --}}
+                        <div class="detail-placeholder" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: #94a3b8; text-align: center; padding: 40px;">
+                            @if($laporan->kategori_laporan == 'found')
+                                <i data-lucide="package" style="width: 64px; height: 64px; color: #cbd5e1;"></i>
+                            @else
+                                <i data-lucide="search" style="width: 64px; height: 64px; color: #cbd5e1;"></i>
+                            @endif
+                            <span style="font-size: 14px; font-weight: 500; color: #94a3b8; font-family: 'Plus Jakarta Sans', sans-serif;">Tidak ada foto untuk laporan ini</span>
+                        </div>
+                    @endif
                 </div>
+                
+                {{-- DAFTAR THUMBNAIL DI BAWAHNYA --}}
                 <div class="thumbnail-list">
-                    <div class="thumb active"><img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&q=80&w=200"></div>
-                    <div class="thumb"><img src="https://images.unsplash.com/photo-1615526675159-e248c3021d3f?auto=format&fit=crop&q=80&w=200"></div>
+                    <div class="thumb active" style="background-color: #f8fafc; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                        @if(isset($laporan->barangs) && $laporan->barangs->foto_barang)
+                            <img src="{{ asset('storage/' . $laporan->barangs->foto_barang) }}">
+                        @else
+                            @if($laporan->kategori_laporan == 'found')
+                                <i data-lucide="package" style="width: 20px; height: 20px; color: #cbd5e1;"></i>
+                            @else
+                                <i data-lucide="search" style="width: 20px; height: 20px; color: #cbd5e1;"></i>
+                            @endif
+                        @endif
+                    </div>
                 </div>
             </div>
         </section>
 
+        @if ($laporan->kategori_laporan === 'found')
         <section class="info-section">
-            <span class="category-badge">Elektronik</span>
-            <h1 class="item-title">Charger Laptop Asus ROG</h1>
-            <p class="timestamp"><i data-lucide="clock"></i> Ditemukan pada 24 Oktober 2024 • 14:20 WIB</p>
+            <span class="category-badge">{{ $laporan->kategori_laporan }}</span>
+            <span class="category-badge">{{ $laporan->barangs->kategori_barang }}</span>
+            <h1 class="item-title">{{ $laporan->barangs->nama_barang }}</h1>
+            <p class="timestamp"><i data-lucide="clock"></i> Ditemukan pada {{ $laporan->created_at->diffForHumans() }}</p>
 
             <div class="status-grid">
-                <div class="status-card"><small>LOKASI SPESIFIK</small><p>Gedung Teknik Lt. 2 (Ruang 204)</p></div>
-                <div class="status-card"><small>STATUS BARANG</small><p class="status-available">Tersedia</p></div>
+                <div class="status-card"><small>LOKASI</small><p>{{ $laporan->barangs->lokasi }}</p></div>
+                <div class="status-card"><small>STATUS LAPORAN</small><p class="status-available">{{ $laporan->status_laporan }}</p></div>
             </div>
 
             <div class="description-box">
                 <h3>Deskripsi Temuan</h3>
-                <p>Ditemukan charger laptop merk ASUS ROG warna hitam di area meja pojok ruang kelas 204. Kondisi kabel masih rapi.</p>
+                <p>{{ $laporan->deskripsi }}</p>
             </div>
 
             <div class="reporter-card">
                 <div class="reporter-content">
-                    <div class="avatar-circle">A</div>
-                    <div class="reporter-text"><small>DILAPORKAN OLEH</small><p>Admin PNM (Staff Keamanan)</p></div>
+                    <!--kode helper untuk membuat insial nama-->
+                    <div class="avatar-circle">{{ Str::of($laporan->users->nama)->words(2, '')->explode(' ')->map(fn($w) => Str::substr($w, 0, 1))->implode('') }}</div>
+                    <div class="reporter-text"><small>DILAPORKAN OLEH {{ $laporan->users->email }}</small><p>{{ $laporan->users->nama }}</p></div>
                 </div>
                 <i data-lucide="shield-check" class="verified-icon"></i>
             </div>
 
             <div class="action-group">
-                <button class="btn-primary"><i data-lucide="message-circle"></i> Hubungi Penemu</button>
-               <button class="btn-outline" onclick="toggleModal()" >
-        Sampaikan Klaim
-    </button>
+                @if(isset($laporan->users->no_hp))
+                    @php
+                        // Membersihkan nomor HP dari karakter spasi, strip (-), atau tanda plus (+) jika ada
+                        $cleanPhone = preg_replace('/[^0-9]/', '', $laporan->users->no_hp);
+                        
+                        // Opsional: Otomatis mengubah angka 0 di depan menjadi kode negara 62
+                        if (str_starts_with($cleanPhone, '0')) {
+                            $cleanPhone = '62' . substr($cleanPhone, 1);
+                        }
+                        
+                        // Format template pesan teks otomatis saat WA dibuka
+                        $pesanTeks = rawurlencode("Halo " . $laporan->users->nama . ", saya melihat laporan Anda di CampusFound mengenai barang '" . $laporan->barangs->nama_barang . "'. Apakah barang tersebut masih ada?");
+                    @endphp
+
+                    <a href="https://wa.me/{{ $cleanPhone }}?text={{ $pesanTeks }}" 
+                       target="_blank" 
+                       class="btn-primary" 
+                       style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i data-lucide="message-circle"></i> Hubungi Penemu
+                    </a>
+                @else
+                    {{-- Tombol Cadangan jika penemu tidak mendaftarkan nomor HP --}}
+                    <button class="btn-primary" disabled style="opacity: 0.6; cursor: not-allowed;">
+                        <i data-lucide="message-circle"></i> No. HP Tidak Tersedia
+                    </button>
+                @endif
+
+                <button class="btn-outline" onclick="toggleModal()" >
+                    Sampaikan Klaim
+                </button>
             </div>
         </section>
+        @endif
     </div>
 
     <section class="comment-section">

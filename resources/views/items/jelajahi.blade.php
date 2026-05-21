@@ -13,11 +13,11 @@
 
         <div class="tabs-container">
                 <!-- data-tab Ge identifikasi JS -->
-            <button class="tab-btn active" data-tab="temuan">
+            <button class="tab-btn active" data-tab="found">
                 <i data-lucide="package-search" style="width: 16px;"></i>
                 Barang Temuan
             </button>
-            <button class="tab-btn" data-tab="hilang">
+            <button class="tab-btn" data-tab="lost">
                 <i data-lucide="help-circle" style="width: 16px;"></i>
                 Barang Hilang
             </button>
@@ -25,33 +25,18 @@
     </div>
 
     <div class="filter-card">
-        <div class="search-wrapper">
-            <i data-lucide="search" class="search-icon"></i>
-            <input type="text" id="searchInput" placeholder="Ketik nama barang yang kamu cari (misal: Kunci Motor, Dompet)..." class="search-input">
-        </div>
-
-        <div class="filter-row">
-            <div class="filter-group">
+        <div class="filter-row" style="display: flex; gap: 16px; align-items: center;">
+            <div class="filter-group" style="flex-grow: 1;">
                 <label class="filter-label">
                      <i class="fa-solid fa-tags"></i>
                 </label>
-                <select id="categoryFilter" class="select-custom" style="color: #868484">
+                {{-- Ubah value di bawah ini agar sama dengan teks di database --}}
+                <select id="categoryFilter" class="select-custom" style="color: #868484; width: 100%;">
                     <option value="">Semua Kategori</option>
-                    <option value="1">Elektronik</option>
-                    <option value="2">Dokumen & Kartu</option>
-                    <option value="3">Kunci & Aksesoris</option>
-                </select>
-            </div>
-
-            <div class="filter-group">
-                <label class="filter-label" title="Pilih Lokasi">
-                    <i class="fa-solid fa-location-dot"></i>
-                </label>
-                <select id="locationFilter" class="select-custom" style="color: #868484">
-                    <option value="">Semua Area Kampus</option>
-                    <option value="A">Gedung Teknik</option>
-                    <option value="B">Perpustakaan</option>
-                    <option value="C">Masjid Kampus</option>
+                    <option value="elektronik">Elektronik</option>
+                    <option value="dokumen/ktm">Dokumen/KTM</option>
+                    <option value="aksesoris">Aksesoris</option>
+                    <option value="lainnya">Lainnya</option>
                 </select>
             </div>
 
@@ -59,55 +44,121 @@
         </div>
     </div>
 
+
     <!-- Item Grid -->
     <div class="item-grid" id="itemGrid">
         <!-- Card Temuan (Ditandai dengan data-type="temuan") -->
-        <div class="card item-card" data-type="temuan" data-category="2" data-location="B">
-            <div class="card-img-box">
-                <img src="https://images.unsplash.com/photo-1621607512214-68297480165e?auto=format&fit=crop&q=80&w=600" alt="Item">
-                <div class="badge badge-blue">Temuan</div>
-            </div>
-            <div class="card-content">
-                <h3 class="card-title">KTM a.n. Budi Setiawan</h3>
-                <div class="card-loc">
-                    <i data-lucide="map-pin" style="width: 12px; color: #2563eb;"></i>
-                    Gazebo Perpustakaan
+        @forelse($laporans as $laporan)
+            <!-- Perhatikan penambahan ->barangs pada data-category dan data-location -->
+            <div class="card item-card" 
+                 data-type="{{ $laporan->kategori_laporan }}" 
+                 data-category="{{ $laporan->barangs->kategori_barang ?? '' }}" 
+                 data-location="{{ $laporan->barangs->lokasi ?? '' }}"
+                 style="{{ $laporan->kategori_laporan == 'lost' ? 'border-color: #ffe4e6;' : '' }}">
+                
+                <div class="card-img-box" style="position: relative; width: 100%; height: 200px; background-color: #f8fafc; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+    
+                    @if(isset($laporan->barangs) && $laporan->barangs->foto_barang)
+                        {{-- TAMPILKAN FOTO ASLI JIKA USER MENGUNGGAH FOTO --}}
+                        <img src="{{ asset('storage/' . $laporan->barangs->foto_barang) }}" 
+                             alt="{{ $laporan->barangs->nama_barang }}" 
+                             style="width: 100%; height: 100%; object-fit: cover;">
+                    @else
+                        {{-- TAMPILKAN PLACEHOLDER CANTIK JIKA FOTO NULL (KOSONG) --}}
+                        <div class="image-placeholder" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: #94a3b8; text-align: center; padding: 20px;">
+                            @if($laporan->kategori_laporan == 'found')
+                                <!-- Icon Box/Paket untuk Barang Temuan -->
+                                <i data-lucide="package" style="width: 48px; height: 48px; color: #cbd5e1;"></i>
+                            @else
+                                <!-- Icon Search/Kaca Pembesar untuk Barang Hilang -->
+                                <i data-lucide="search" style="width: 48px; height: 48px; color: #cbd5e1;"></i>
+                            @endif
+                            <span style="font-size: 12px; font-weight: 500; color: #94a3b8; font-family: 'Plus Jakarta Sans', sans-serif;">Tidak ada foto</span>
+                        </div>
+                    @endif
+                    
+                    {{-- BADGE KATEGORI LAPORAN (TETAP DI ATAS GAMBAR) --}}
+                    @if($laporan->kategori_laporan == 'found')
+                        <div class="badge badge-blue">Temuan</div>
+                    @else
+                        <div class="badge badge-rose">Dicari</div>
+                    @endif
                 </div>
-                <div class="card-footer">
-                    <span class="card-time">2 jam yang lalu</span>
-                    <button class="btn-view btn-view-blue">
-                        LIHAT <i data-lucide="arrow-right" style="width: 12px;"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
 
-        <div class="card item-card" data-type="hilang" data-category="3" data-location="A" style="border-color: #ffe4e6;">
-            <div class="card-img-box">
-                <img src="https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&q=80&w=600" alt="Item">
-                <div class="badge badge-rose">Dicari</div>
-            </div>
-            <div class="card-content">
-                <h3 class="card-title">Dompet Kulit Cokelat</h3>
-                <div class="card-loc">
-                    <i data-lucide="search" style="width: 12px; color: #e11d48;"></i>
-                    Sekitar Kantin Teknik
+                <div class="card-content" style="padding: 16px; text-align: left;">
+                    {{-- Ambil nama barang dari relasi --}}
+                    <h3 class="card-title" style="color: #1e293b; font-size: 16px; font-weight: 700; margin-bottom: 8px; display: block;">
+                        {{ $laporan->barangs->nama_barang ?? 'Nama Barang Tidak Ditemukan' }}
+                    </h3>
+                    
+                    {{-- Ambil lokasi dari relasi --}}
+                    <div class="card-loc" style="color: #475569; font-size: 13px; display: flex; align-items: center; gap: 6px; margin-bottom: 12px;">
+                        @if($laporan->kategori_laporan == 'found')
+                            <i data-lucide="map-pin" style="width: 14px; height: 14px; color: #2563eb; flex-shrink: 0;"></i>
+                        @else
+                            <i data-lucide="search" style="width: 14px; height: 14px; color: #e11d48; flex-shrink: 0;"></i>
+                        @endif
+                        <span style="color: #475569;">{{ $laporan->barangs->lokasi ?? 'Lokasi Tidak Ditemukan' }}</span>
+                    </div>
+                    
+                    <div class="card-footer" style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 12px;">
+                        <span class="card-time" style="color: #94a3b8; font-size: 12px;">
+                            {{ $laporan->created_at->diffForHumans() }}
+                        </span>
+                        
+                        @if($laporan->kategori_laporan == 'found')
+                            <a href="{{ route('laporan.detail', ['id' => $laporan->id_laporan]) }}" class="btn-view btn-view-blue">
+                                LIHAT <i data-lucide="arrow-right" style="width: 12px;"></i>
+                            </a>
+                        @else
+                            <a href="{{ route('laporan.detail', ['id' => $laporan->id_laporan]) }}" class="btn-view btn-view-rose">
+                                BANTU <i data-lucide="arrow-right" style="width: 12px;"></i>
+                            </a>
+                        @endif
+                    </div>
                 </div>
-                <div class="card-footer">
-                    <span class="card-reward">DAPAT JACKPOT</span>
-                    <button class="btn-view btn-view-rose">
-                        BANTU <i data-lucide="arrow-right" style="width: 12px;"></i>
-                    </button>
-                </div>
             </div>
-        </div>
+        @empty
+            <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #868484;">
+                <i data-lucide="package-open" style="width: 48px; height: 48px; margin-bottom: 12px;"></i>
+                <p>Belum ada laporan barang yang terdaftar saat ini.</p>
+            </div>
+        @endforelse
     </div>
 
+    <!-- Pagination -->
     <div class="pagination">
-        <button class="page-btn"><i data-lucide="chevron-left" style="width: 18px;"></i></button>
-        <button class="page-btn active">1</button>
-        <button class="page-btn">2</button>
-        <button class="page-btn"><i data-lucide="chevron-right" style="width: 18px;"></i></button>
+        {{-- Tombol Previous --}}
+        @if ($laporans->onFirstPage())
+            <button class="page-btn" style="opacity: 0.5; cursor: not-allowed;">
+                <i data-lucide="chevron-left" style="width: 18px;"></i>
+            </button>
+        @else
+            <a href="{{ $laporans->previousPageUrl() }}" class="page-btn">
+                <i data-lucide="chevron-left" style="width: 18px;"></i>
+            </a>
+        @endif
+
+        {{-- Tombol Angka Halaman --}}
+        @foreach ($laporans->getUrlRange(1, $laporans->lastPage()) as $page => $url)
+            @if ($page == $laporans->currentPage())
+                <button class="page-btn active">{{ $page }}</button>
+            @else
+                {{-- Menambahkan appends otomatis untuk parameter tab di URL --}}
+                <a href="{{ $laporans->appends(request()->query())->url($page) }}" class="page-btn">{{ $page }}</a>
+            @endif
+        @endforeach
+
+        {{-- Tombol Next --}}
+        @if ($laporans->hasMorePages())
+            <a href="{{ $laporans->nextPageUrl() }}" class="page-btn">
+                <i data-lucide="chevron-right" style="width: 18px;"></i>
+            </a>
+        @else
+            <button class="page-btn" style="opacity: 0.5; cursor: not-allowed;">
+                <i data-lucide="chevron-right" style="width: 18px;"></i>
+            </button>
+        @endif
     </div>
 </main>
 
@@ -116,55 +167,72 @@
 </a>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const tabs = document.querySelectorAll(".tab-btn");
-    const cards = document.querySelectorAll(".item-card");
-    const searchInput = document.getElementById("searchInput");
-    const categoryFilter = document.getElementById("categoryFilter");
-    const locationFilter = document.getElementById("locationFilter");
-    const btnApplyFilter = document.getElementById("btnApplyFilter");
+    document.addEventListener("DOMContentLoaded", function () {
+        const tabs = document.querySelectorAll(".tab-btn");
+        const cards = document.querySelectorAll(".item-card");
+        const categoryFilter = document.getElementById("categoryFilter");
+        const btnApplyFilter = document.getElementById("btnApplyFilter");
 
-    let currentTab = "temuan"; // Default
+        // 1. Ambil status tab aktif dari parameter URL (?tab=lost), default ke 'found'
+        const urlParams = new URLSearchParams(window.location.search);
+        let currentTab = urlParams.get('tab') || "found"; 
 
-    function filterItems() {
-        const searchText = searchInput.value.toLowerCase();
-        const selectedCategory = categoryFilter.value;
-        const selectedLocation = locationFilter.value;
-
-        cards.forEach(card => {
-            const matchesTab = card.getAttribute("data-type") === currentTab;
-            const matchesSearch = card.querySelector(".card-title").textContent.toLowerCase().includes(searchText);
-            const matchesCategory = selectedCategory === "" || card.getAttribute("data-category") === selectedCategory;
-            const matchesLocation = selectedLocation === "" || card.getAttribute("data-location") === selectedLocation;
-
-            // Kartu ditampilkan jklo memenuhi semua kondisi filter
-            if (matchesTab && matchesSearch && matchesCategory && matchesLocation) {
-                card.style.display = "block";
+        // 2. Sinkronisasikan class 'active' pada tombol tab HTML sesuai parameter URL
+        tabs.forEach(tab => {
+            if (tab.getAttribute("data-tab") === currentTab) {
+                tab.classList.add("active");
             } else {
-                card.style.display = "none";
+                tab.classList.remove("active");
             }
         });
-    }
 
-    // pindah tab
-    tabs.forEach(tab => {
-        tab.addEventListener("click", function () {
-            tabs.forEach(t => t.classList.remove("active"));
-            this.classList.add("active");
+        // 3. Fungsi Utama Penyaringan (Hanya Tab & Kategori)
+        function filterItems() {
+            const selectedCategory = categoryFilter.value.toLowerCase().trim();
 
-            currentTab = this.getAttribute("data-tab");
-            filterItems();
+            cards.forEach(card => {
+                const cardType = (card.getAttribute("data-type") || "").toLowerCase().trim();
+                const cardCategory = (card.getAttribute("data-category") || "").toLowerCase().trim();
+
+                // Cek apakah kartu cocok dengan tab yang aktif saat ini
+                const matchesTab = cardType === currentTab;
+                
+                // Cek apakah kartu cocok dengan kategori yang dipilih (jika kosong, anggap semua cocok)
+                const matchesCategory = selectedCategory === "" || cardCategory === selectedCategory;
+
+                // Tampilkan kartu hanya jika memenuhi KEDUA kondisi filter
+                if (matchesTab && matchesCategory) {
+                    card.style.setProperty('display', 'block', 'important');
+                } else {
+                    card.style.setProperty('display', 'none', 'important');
+                }
+            });
+        }
+
+        // 4. Logika klik pindah tab
+        tabs.forEach(tab => {
+            tab.addEventListener("click", function () {
+                tabs.forEach(t => t.classList.remove("active"));
+                this.classList.add("active");
+
+                currentTab = this.getAttribute("data-tab");
+                
+                // Perbarui URL browser tanpa reload agar pagination mengingat tab pilihan
+                const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?tab=' + currentTab;
+                window.history.pushState({ path: newUrl }, '', newUrl);
+
+                // Setiap pindah tab, jalankan penyaringan ulang
+                filterItems();
+            });
         });
+
+        // 5. Jalankan filter saat tombol "Terapkan Filter" diklik
+        if (btnApplyFilter) {
+            btnApplyFilter.addEventListener("click", filterItems);
+        }
+
+        // Jalankan filter pertama kali saat halaman selesai dimuat oleh browser
+        filterItems();
     });
-
-    //Pencarian Tanpa Tombol
-    searchInput.addEventListener("input", filterItems);
-
-    //  untuk Tombol Terapkan Filter
-    btnApplyFilter.addEventListener("click", filterItems);
-
-    // Jalankan filter pertama kali saat halaman dimuat
-    filterItems();
-});
 </script>
 @endsection

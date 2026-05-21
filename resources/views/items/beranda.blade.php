@@ -104,7 +104,7 @@
                         <div class="user-avatar">A</div>
                         <span>Admin PNM</span>
                     </div>
-                    <a href="{{ route('barang.detail', ['id' => 1]) }}" class="btn-detail">
+                    <a href="{{ route('laporan.detail', ['id' => 1]) }}" class="btn-detail">
                         DETAIL <i data-lucide="chevron-right"></i>
                     </a>
                 </div>

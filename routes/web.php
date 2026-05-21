@@ -11,12 +11,6 @@ Route::get('/', function () {
 Route::get('/success', function () {
     return view('items.success');
 })->name('success');
-Route::get('/jelajahi', function () {
-    return view('items.jelajahi');
-})->name('jelajahi');
-Route::get('/barang/{id}', function ($id) {
-    return view('items.detail');
-})->name('barang.detail');
 Route::get('/profile', function () {
     return view('items.profile');
 })->name('profile');
@@ -44,6 +38,11 @@ Route::middleware('auth')->group(function (){
 
     Route::get('/addLaporan', [LaporanController::class, 'create'])->name('addLaporan');
     Route::post('/addLaporan', [LaporanController::class, 'store']);
+
+    Route::get('/jelajahi', [LaporanController::class, 'index'])->name('jelajahi');
+
+    // 'laporan' parameter name is exactly the same as parameter name in show() method
+    Route::get('/laporan/{id}', [LaporanController::class, 'show'])->name('laporan.detail');
 });
 
 

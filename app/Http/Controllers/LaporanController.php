@@ -15,11 +15,11 @@ class LaporanController extends Controller
      */
     public function index()
     {
-        $laporans = Laporan::with(['users', 'barangs'])->latest()->get();
+        $laporans = Laporan::with(['users', 'barangs'])->latest()->paginate(6);
 
         // return view laporan.index means it looking for views/laporan/index.blade.php
         // TODO: define the view route according to frontend inside views/
-        return view('laporan.index', compact('laporans'));
+        return view('items.jelajahi', compact('laporans'));
     }
 
     /**
@@ -91,13 +91,13 @@ class LaporanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Laporan $laporan)
+    public function show($id)
     {
-        $laporan->load(['users', 'barangs', 'komentars.users']);
+        $laporan = Laporan::with(['users', 'barangs', 'komentars.users'])->findOrFail($id);
 
         // laporan.show means it looking for views/laporan/show.blade.php
         // TODO: define the view route according to frontend inside views/
-        return view('laporan.show', compact('laporan'));
+        return view('items.detail', compact('laporan'));
     }
 
     /**
