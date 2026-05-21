@@ -28,8 +28,7 @@ class LaporanController extends Controller
     public function create()
     {
         // return view laporan.create means it looking for views/laporan/create.blade.php
-        // TODO: define the view route according to frontend inside views/
-        return view('laporan.create');
+        return view('items.addLaporan');
     }
 
     /**
@@ -39,16 +38,21 @@ class LaporanController extends Controller
     {
         // Validation
         $request->validate([
-            'kategori_laporan' => 'required',
+            'kategori_laporan' => 'required|in:lost,found',
             'nama_barang' => 'required',
             'kategori_barang' => 'required',
+        ], [
+            'kategori_laporan.required' => 'Kategori Laporan wajib dipilih',
+            'nama_barang.required' => 'Nama Barang wajib diisi',
+            'kategori_barang.required' => 'Kategori Barang wajib dipilih, atau pilih "lainnya"',
         ]);
 
         // Validation: IF the kategori_laporan is 'found' then lokasi must be included
         if ($request['kategori_laporan'] === 'found') {
             $request->validate([
                 'lokasi' => 'required'
-            ]);
+            ], 
+            ['lokasi.required' => 'Lokasi wajib dipilih jika menemukan barang']);
         }
 
 
@@ -81,7 +85,7 @@ class LaporanController extends Controller
         });
         
         // TODO: define the redirect route according to frontend inside views/
-        return redirect()->route('laporan.index')->with('status', 'Laporan berhasil dibuat!');
+        return redirect()->back()->withInput([])->with('success', 'Laporan Anda berhasil diSubmit!');
     }
 
     /**

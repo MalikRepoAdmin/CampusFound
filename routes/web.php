@@ -11,9 +11,6 @@ Route::get('/', function () {
 Route::get('/success', function () {
     return view('items.success');
 })->name('success');
-Route::get('/addLaporan', function () {
-    return view('items.addLaporan');
-})->name('addLaporan');
 Route::get('/jelajahi', function () {
     return view('items.jelajahi');
 })->name('jelajahi');
@@ -44,6 +41,9 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function (){
 
     Route::get('/beranda', function () { return view('items.beranda'); })->name('beranda');
+
+    Route::get('/addLaporan', [LaporanController::class, 'create'])->name('addLaporan');
+    Route::post('/addLaporan', [LaporanController::class, 'store']);
 });
 
 
