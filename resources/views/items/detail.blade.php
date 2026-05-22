@@ -44,28 +44,37 @@
             </div>
         </section>
 
-        @if ($laporan->kategori_laporan === 'found')
         <section class="info-section">
+            <!-- Badge Kategori -->
             <span class="category-badge">{{ $laporan->kategori_laporan }}</span>
             <span class="category-badge">{{ $laporan->barangs->kategori_barang }}</span>
+            
             <h1 class="item-title">{{ $laporan->barangs->nama_barang }}</h1>
-            <p class="timestamp"><i data-lucide="clock"></i> Ditemukan pada {{ $laporan->created_at->diffForHumans() }}</p>
+            
+            <!-- Dinamis: Ditemukan / Hilang pada -->
+            <p class="timestamp">
+                <i data-lucide="clock"></i> 
+                {{ $laporan->kategori_laporan === 'found' ? 'Ditemukan' : 'Hilang' }} pada {{ $laporan->created_at->diffForHumans() }}
+            </p>
 
             <div class="status-grid">
                 <div class="status-card"><small>LOKASI</small><p>{{ $laporan->barangs->lokasi }}</p></div>
                 <div class="status-card"><small>STATUS LAPORAN</small><p class="status-available">{{ $laporan->status_laporan }}</p></div>
             </div>
 
+            <!-- Dinamis: Deskripsi Temuan / Kehilangan -->
             <div class="description-box">
-                <h3>Deskripsi Temuan</h3>
+                <h3>Deskripsi {{ $laporan->kategori_laporan === 'found' ? 'Temuan' : 'Kehilangan' }}</h3>
                 <p>{{ $laporan->deskripsi }}</p>
             </div>
 
             <div class="reporter-card">
                 <div class="reporter-content">
-                    <!--kode helper untuk membuat insial nama-->
                     <div class="avatar-circle">{{ Str::of($laporan->users->nama)->words(2, '')->explode(' ')->map(fn($w) => Str::substr($w, 0, 1))->implode('') }}</div>
-                    <div class="reporter-text"><small>DILAPORKAN OLEH {{ $laporan->users->email }}</small><p>{{ $laporan->users->nama }}</p></div>
+                    <div class="reporter-text">
+                        <small>DILAPORKAN OLEH {{ $laporan->users->email }}</small>
+                        <p>{{ $laporan->users->nama }}</p>
+                    </div>
                 </div>
                 <i data-lucide="shield-check" class="verified-icon"></i>
             </div>
@@ -73,37 +82,37 @@
             <div class="action-group">
                 @if(isset($laporan->users->no_hp))
                     @php
-                        // Membersihkan nomor HP dari karakter spasi, strip (-), atau tanda plus (+) jika ada
                         $cleanPhone = preg_replace('/[^0-9]/', '', $laporan->users->no_hp);
                         
-                        // Opsional: Otomatis mengubah angka 0 di depan menjadi kode negara 62
                         if (str_starts_with($cleanPhone, '0')) {
                             $cleanPhone = '62' . substr($cleanPhone, 1);
                         }
                         
-                        // Format template pesan teks otomatis saat WA dibuka
-                        $pesanTeks = rawurlencode("Halo " . $laporan->users->nama . ", saya melihat laporan Anda di CampusFound mengenai barang '" . $laporan->barangs->nama_barang . "'. Apakah barang tersebut masih ada?");
+                        // Dinamis: Menyesuaikan isi pesan template WhatsApp berdasarkan jenis laporan
+                        $kataKunci = $laporan->kategori_laporan === 'found' ? "mengetahui barang" : "menemukan barang";
+                        $pesanTeks = rawurlencode("Halo " . $laporan->users->nama . ", saya melihat laporan Anda di CampusFound " . $kataKunci . " '" . $laporan->barangs->nama_barang . "'.");
                     @endphp
 
+                    <!-- Dinamis: Hubungi Penemu / Hubungi Pemilik -->
                     <a href="https://wa.me/{{ $cleanPhone }}?text={{ $pesanTeks }}" 
                        target="_blank" 
                        class="btn-primary" 
                        style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
-                        <i data-lucide="message-circle"></i> Hubungi Penemu
+                        <i data-lucide="message-circle"></i> Hubungi {{ $laporan->kategori_laporan === 'found' ? 'Penemu' : 'Pemilik' }}
                     </a>
                 @else
-                    {{-- Tombol Cadangan jika penemu tidak mendaftarkan nomor HP --}}
                     <button class="btn-primary" disabled style="opacity: 0.6; cursor: not-allowed;">
                         <i data-lucide="message-circle"></i> No. HP Tidak Tersedia
                     </button>
                 @endif
 
-                <button class="btn-outline" onclick="toggleModal()" >
-                    Sampaikan Klaim
-                </button>
+                <!-- Kondisi: Tombol klaim hanya muncul jika status laporan adalah barang yang ditemukan (found) -->
+                @if($laporan->kategori_laporan === 'found')
+                    <button class="btn-outline" onclick="toggleModal()">
+                        Sampaikan Klaim
+                    </button>
+                @endif
             </div>
-        </section>
-        @endif
     </div>
 
     <section class="comment-section">

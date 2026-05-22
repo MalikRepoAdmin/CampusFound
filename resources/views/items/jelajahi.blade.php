@@ -60,7 +60,7 @@
     
                     @if(isset($laporan->barangs) && $laporan->barangs->foto_barang)
                         {{-- TAMPILKAN FOTO ASLI JIKA USER MENGUNGGAH FOTO --}}
-                        <img src="{{ asset('storage/' . $laporan->barangs->foto_barang) }}" 
+                        <img src="{{ Storage::url($laporan->barangs->foto_barang) }}" 
                              alt="{{ $laporan->barangs->nama_barang }}" 
                              style="width: 100%; height: 100%; object-fit: cover;">
                     @else

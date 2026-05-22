@@ -16,13 +16,6 @@
                 Sistem informasi kehilangan dan penemuan barang terintegrasi untuk menciptakan lingkungan kampus yang lebih jujur dan peduli.
             </p>
 
-            <div class="search-container">
-                <div class="search-icon">
-                    <i data-lucide="search"></i>
-                </div>
-                <input type="text" placeholder="Cari barang (KTM, Kunci, HP...)">
-                <button class="btn-search">Cari</button>
-            </div>
         </div>
 
         <div class="hero-widget-container">

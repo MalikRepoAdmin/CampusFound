@@ -68,8 +68,8 @@ class LaporanController extends Controller
 
             // foto_barang is optional, if it exist and not null then store into storage and get the path
             $path = null;
-            if (isset($request['foto_barang'])) {
-                $path = $request->file('foto_barang')->store('photos', 's3');
+            if ($request->hasFile('foto_barang')) {
+                $path = $request->file('foto_barang')->store('photos', config('filesystems.default'));
             }
 
             // Create Barang then store along with Laporan

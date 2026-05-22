@@ -22,7 +22,7 @@
         </header>
 
         <div class="form-card">
-            <form action="{{ route('addLaporan') }}" method="POST">
+            <form action="{{ route('addLaporan') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <label class="label">Kategori Laporan</label>
@@ -89,16 +89,30 @@
 
                 <div style="margin-bottom: 30px;">
                     <label class="label">Foto Barang</label>
-                    <div class="upload-area">
+                    
+                    <!-- Tambahkan ID dan style kursor pointer -->
+                    <div class="upload-area" id="drop-zone" style="border: 2px dashed var(--slate-300); padding: 20px; text-align: center; border-radius: 8px; cursor: pointer; transition: background 0.2s;">
+                        
+                        <!-- Input file tersembunyi -->
+                        <input type="file" id="file-input" name="foto_barang" accept="image/jpeg, image/png" style="display: none;">
+                        
                         <i data-lucide="camera" style="width: 40px; height: 40px; color: var(--primary); margin-bottom: 12px;"></i>
-                        <p style="font-size: 14px; font-weight: 700; color: var(--slate-900);">Klik untuk Unggah Foto</p>
-                        <span style="font-size: 11px; color: var(--slate-500);" name="foto_barang">Mendukung JPG, PNG (Maks. 2MB)</span>
-
+                        <p style="font-size: 14px; font-weight: 700; color: var(--slate-900);" id="upload-text">Klik atau Tarik Foto ke Sini</p>
+                        <span style="font-size: 11px; color: var(--slate-500);">Mendukung JPG, PNG (Maks. 2MB)</span>
+                        
                         @error('foto_barang')
-                            <span style="color: red; font-size: 12px; display: block; margin-top: 5px;">{{ $message }}</span>
+                        <span style="color: red; font-size: 12px; display: block; margin-top: 5px;">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
+
+                <style>
+                    /* Efek visual saat file berada di atas area drop */
+                    .upload-area.dragover {
+                        background-color: var(--slate-100);
+                        border-color: var(--primary) !important;
+                    }
+                </style>
 
                 <button type="submit" class="btn-submit">
                     Publikasikan Sekarang
@@ -110,6 +124,64 @@
 
     <script>
         lucide.createIcons();
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const dropZone = document.getElementById("drop-zone");
+            const fileInput = document.getElementById("file-input");
+            const uploadText = document.getElementById("upload-text");
+
+            // 1. Memicu klik input file saat area drop di-klik
+            dropZone.addEventListener("click", () => fileInput.click());
+
+            // 2. Efek visual saat file ditarik di atas area
+            ["dragenter", "dragover"].forEach(eventName => {
+                dropZone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    dropZone.classList.add("dragover");
+                }, false);
+            });
+
+            ["dragleave", "drop"].forEach(eventName => {
+                dropZone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    dropZone.classList.remove("dragover");
+                }, false);
+            });
+
+            // 3. Menangani file yang dijatuhkan (Drop)
+            dropZone.addEventListener("drop", (e) => {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+
+                if (files.length > 0) {
+                    fileInput.files = files; // Masukkan file ke dalam input HTML
+                    handleFile(files[0]);
+                }
+            });
+
+            // 4. Menangani file yang dipilih lewat klik manual
+            fileInput.addEventListener("change", (e) => {
+                if (fileInput.files.length > 0) {
+                    handleFile(fileInput.files[0]);
+                }
+            });
+
+            // 5. Validasi ringan & feedback visual
+            function handleFile(file) {
+                const maxSize = 2 * 1024 * 1024; // 2MB
+                
+                if (file.size > maxSize) {
+                    alert("Ukuran file terlalu besar! Maksimal 2MB.");
+                    fileInput.value = ""; // Reset input
+                    uploadText.innerText = "Klik atau Tarik Foto ke Sini";
+                    return;
+                }
+
+                // Tampilkan nama file yang berhasil dipilih
+                uploadText.innerText = `Terpilih: ${file.name}`;
+                uploadText.style.color = "var(--primary)";
+            }
+        });
     </script>
 </body>
 </html>
