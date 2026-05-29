@@ -34,7 +34,9 @@ class KomentarController extends Controller
 
         // Validation
         $request->validate([
-            'isi_komentar' => 'required|string|max:1000',
+            'isi_komentar' => 'required|string|max:255',
+        ], [
+            'isi_komentar.required' => 'Komentar wajib diisi untuk membuat komentar'
         ]);
 
         // Store Komentar using relation to automatically fill the id_laporan
@@ -74,9 +76,8 @@ class KomentarController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Komentar $komentar)
     {
-        $komentar = \App\Models\Komentar::findOrFail($id);
 
         // Validate that the user who delete the komentar is the owner of the komentar
         if ($komentar->fk_id_user !== \Illuminate\Support\Facades\Auth::id()) {
