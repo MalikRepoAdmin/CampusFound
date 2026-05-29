@@ -35,4 +35,9 @@ class Laporan extends Model
     {
         return $this->hasMany(Komentar::class, 'fk_id_laporan');
     }
+
+    public function klaims()
+    {
+        return $this->hasMany(Klaim::class, 'fk_id_laporan');
+    }
 }

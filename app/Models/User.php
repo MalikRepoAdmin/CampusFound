@@ -44,6 +44,11 @@ class User extends Authenticatable
         return $this->hasMany(Komentar::class, 'fk_id_user');
     }
 
+    public function klaims()
+    {
+        return $this->hasMany(Klaim::class, 'fk_id_user');
+    }
+
     #[Override]
     public function getAuthIdentifierName()
     {
