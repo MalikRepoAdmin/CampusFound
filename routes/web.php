@@ -2,39 +2,25 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\KlaimController;
 use App\Http\Controllers\KomentarController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/success', function () {
-    return view('items.success');
-})->name('success');
-Route::get('/profile', function () {
-    return view('items.profile');
-})->name('profile');
 Route::get('/tentang-kami', function () {
     return view('items.tentangKami');
 })->name('tentang-kami');
 
-/**
- * Edit Barang Routes
- */ 
-// This middleware will break demo
-Route::middleware('auth')->group(function () {
-
-    Route::get('/items/{laporan}/editbarang', [LaporanController::class, 'edit'])->name('items.editBarang');
-    Route::put('/items/{laporan}', [LaporanController::class, 'update'])->name('items.update');
-});
-
 
 /**
  * Pages/items Routes
- */ 
+ */
 Route::middleware('auth')->group(function (){
 
-    Route::get('/beranda', function () { return view('items.beranda'); })->name('beranda');
+    Route::get('/beranda',[LaporanController::class, 'indexBeranda'])->name('beranda');
 
     Route::get('/addLaporan', [LaporanController::class, 'create'])->name('addLaporan');
     Route::post('/addLaporan', [LaporanController::class, 'store']);
@@ -46,13 +32,28 @@ Route::middleware('auth')->group(function (){
     Route::post('/laporan/{id}', [KomentarController::class, 'store'])->name('komentar.store');
 
     // Delete Komentar
-    Route::delete('/laporan/{id}', [KomentarController::class, 'destroy'])->name('komentar.delete');
+    Route::delete('/laporan/{komentar}', [KomentarController::class, 'destroy'])->name('komentar.delete');
+
+    // Profile
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+
+    // Edit Laporan
+    Route::get('/editBarang/{laporan}', [LaporanController::class, 'edit'])->name('editBarang');
+    Route::put('/editBarang/{laporan}', [LaporanController::class, 'update']);
+
+    // Resolve Laporan
+    Route::patch('/profile/{laporan}', [LaporanController::class, 'resolveStatus'])->name('resolveLaporan');
+
+    // Klaim Routes
+    Route::get('/klaim/{laporan}', [KlaimController::class, 'create'])->name('klaim');
+    Route::post('/klaim/{laporan}', [KlaimController::class, 'store']);
+    Route::delete('/klaim/{klaim}', [KlaimController::class, 'destroy'])->name('klaim.cancel');
 });
 
 
 /**
  * Auth Routes
- */ 
+ */
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
