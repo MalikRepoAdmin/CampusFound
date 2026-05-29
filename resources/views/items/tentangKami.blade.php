@@ -19,15 +19,15 @@
         <div class="bento-item about-story">
             <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 20px;">Filosofi CampusFound</h2>
             <p style="color: var(--text-light); font-size: 17px; line-height: 1.7;">
-                Berawal dari tugas akhir di kampus, CampusFound berkembang menjadi platform nyata yang memfasilitasi kejujuran. Kami percaya bahwa teknologi terbaik adalah yang mampu menyelesaikan masalah sosial sederhana: mengembalikan apa yang bukan milik kita.
+                Berawal dari puluhan laporan yang membanjiri grub Whatsapp setiap minggunya, CampusFound berkembang menjadi platform nyata yang memfasilitasi kejujuran. Kami percaya bahwa teknologi terbaik adalah yang mampu menyelesaikan masalah sosial sederhana: mengembalikan apa yang bukan milik kita.
             </p>
         </div>
 
         <div class="bento-item about-stats">
             <div style="height: 100%; display: flex; flex-direction: column; justify-content: center;">
                 <span style="font-size: 40px; font-weight: 800;">100%</span>
-                <p style="font-size: 14px; opacity: 0.7; text-transform: uppercase; letter-spacing: 1px;">Karya Anak TERPAL</p>
-                <p style="margin-top: 20px; font-style: italic; opacity: 0.9;">"Integritas adalah melakukan hal yang benar, bahkan ketika tidak ada yang melihat."</p>
+                <p style="font-size: 14px; opacity: 0.7; text-transform: uppercase; letter-spacing: 1px;">Karya Anak TRPL</p>
+                <p style="margin-top: 20px; font-style: italic; opacity: 0.9;">"No act of kindness, no matter how small, is ever wasted"</p>
             </div>
         </div>
 
@@ -40,19 +40,19 @@
                 <div class="step-card">
                     <div class="step-icon-wrapper"><i data-lucide="camera"></i></div>
                     <h3>Dokumentasikan</h3>
-                    <p>Potret barang temuan dari berbagai sisi agar pemilik mudah mengenali detailnya.</p>
+                    <p>Potret barang temuan agar pemilik mudah mengenali detailnya.</p>
                 </div>
 
                 <div class="step-card">
                     <div class="step-icon-wrapper"><i data-lucide="map-pin"></i></div>
                     <h3>Tentukan Lokasi</h3>
-                    <p>Sebutkan titik spesifik di mana barang ditemukan untuk verifikasi yang akurat.</p>
+                    <p>Sebutkan lokasi spesifik di mana barang ditemukan untuk verifikasi yang akurat.</p>
                 </div>
 
                 <div class="step-card">
                     <div class="step-icon-wrapper"><i data-lucide="check-circle"></i></div>
-                    <h3>Verifikasi Aman</h3>
-                    <p>Serahkan pada admin atau komunikasikan secara aman melalui sistem kami.</p>
+                    <h3>Tunggu Pemilik Barang</h3>
+                    <p>Pemilik barang akan mengajukan klaim pada laporan dan menguhubungi anda.</p>
                 </div>
             </div>
         </div>
@@ -70,25 +70,18 @@
             <h3 class="legal-title"><i data-lucide="lock"></i> Kebijakan Privasi</h3>
             <ul class="legal-list">
                 <li>Data pribadi Anda (Nama/Kontak) hanya akan digunakan untuk keperluan verifikasi barang.</li>
-                <li>Kami tidak akan membagikan data Anda kepada pihak ketiga tanpa izin.</li>
-                <li>Foto yang diunggah akan tersimpan di server kami hingga barang terkonfirmasi kembali ke pemilik.</li>
+                <li>Kami tidak akan menyimpan maupun membagikan data chat whatsapp anda.</li>
             </ul>
         </div>
 
     </div>
     <div style="margin-top: 80px; text-align: center;">
         <p style="color: var(--text-muted); margin-bottom: 24px; font-weight: 500;">Punya pertanyaan lebih lanjut?</p>
-        <a href="https://wa.me/6285708935152?text=Halo%20CampusFound,%20saya%20butuh%20bantuan." style="text-decoration: none; color: #0f172a; font-weight: 800; border-bottom: 2px solid #2563eb; padding-bottom: 4px;">Hubungi Tim Kami &rarr;</a>
+        <a href="https://wa.me/6285904417152?text=Halo%20CampusFound,%20saya%20butuh%20bantuan." style="text-decoration: none; color: #0f172a; font-weight: 800; border-bottom: 2px solid #2563eb; padding-bottom: 4px;">Hubungi Tim Kami &rarr;</a>
     </div>
 </div>
- <a href="https://wa.me/6285708935152?text=Halo%20CampusFound,%20saya%20butuh%20bantuan." class="fab-wa" target="_blank">
+ <a href="https://wa.me/6285904417152?text=Halo%20CampusFound,%20saya%20butuh%20bantuan." class="fab-wa" target="_blank">
     <i data-lucide="message-circle"></i>
 </a>
 @endsection
 
-@push('scripts')
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script>
-        lucide.createIcons();
-    </script>
-@endpush

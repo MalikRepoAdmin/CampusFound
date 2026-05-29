@@ -9,11 +9,7 @@
             <span>Campus<span class="text-blue">Found.</span></span>
         </a>
         <br>
-                <p>Solusi cerdas bagi mahasiswa untuk mengembalikan barang yang hilang ke pemiliknya dengan cepat dan aman.</p>
-                <div class="social-icons">
-                    <a href="https://www.instagram.com/pnmofficial/" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="mailto:ayui38712@gmail.com" class="social-icon"><i data-lucide="mail"></i></a>
-                </div>
+                <p>Solusi cerdas bagi warga kampus PNM untuk mengembalikan barang yang hilang dan tertinggal ke pemiliknya.</p>
             </div>
 
             <div class="footer-links">
@@ -26,12 +22,10 @@
             </div>
 
             <div class="footer-links">
-                <h4>Bantuan</h4>
-                <ul>
-                    <li><a href="/tentang-kami">Pusat Bantuan</a></li>
-                    <li><a href="/tentang-kami">Ketentuan Layanan</a></li>
-                    <li><a href="/tentang-kami">Kebijakan Privasi</a></li>
-                </ul>
+                <div class="social-icons">
+                    <a href="https://www.instagram.com/async_2a?igsh=MTN0Nm03Nzd0dDkycw==" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
+                     <a href="https://www.tiktok.com/@trpl2a?_r=1&_t=ZS-96fY2JQLh1I" class="social-icon"><i class="fa-brands fa-tiktok"></i></a>
+                </div>
             </div>
         </div>
 

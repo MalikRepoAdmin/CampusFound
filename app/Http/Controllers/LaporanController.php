@@ -6,6 +6,7 @@ use App\Models\Laporan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class LaporanController extends Controller
@@ -20,6 +21,35 @@ class LaporanController extends Controller
         // return view laporan.index means it looking for views/laporan/index.blade.php
         // TODO: define the view route according to frontend inside views/
         return view('items.jelajahi', compact('laporans'));
+    }
+
+    /**
+     * Display a listing of the resource for 'beranda'
+     */
+    public function indexBeranda()
+    {
+        $laporans = Laporan::with(['users', 'barangs'])->latest()->paginate(3);
+        $laporansCount = Laporan::count();
+        $laporansActiveCount = Laporan::where('status_laporan', 'active')->count();
+        $laporansResolvedCount = Laporan::where('status_laporan', 'resolved')->count();
+        $resolvedPercentage = null;
+
+        if ($laporansCount > 0 && $laporansResolvedCount > 0) {
+            $percentage = ($laporansResolvedCount / $laporansCount) * 100;
+            $resolvedPercentage = number_format($percentage, 2);
+        } else {
+            $resolvedPercentage = 0;
+        }
+
+        // return view laporan.index means it looking for views/laporan/index.blade.php
+        // TODO: define the view route according to frontend inside views/
+        return view('items.beranda', compact(
+            'laporans',
+            'laporansCount', 
+            'laporansActiveCount', 
+            'laporansResolvedCount',
+            'resolvedPercentage',
+        ));
     }
 
     /**
@@ -69,6 +99,14 @@ class LaporanController extends Controller
             // foto_barang is optional, if it exist and not null then store into storage and get the path
             $path = null;
             if ($request->hasFile('foto_barang')) {
+                $request->validate([
+                    'foto_barang' => 'image|mimes:jpg,png,jpeg|max:2048',
+                ], [
+                    'foto_barang.image' => 'File yang anda Upload tidak valid, hanya boleh upload gambar',
+                    'foto_barang.mimes' => 'Format Gambar tidak didukung',
+                    'foto_barang.max' => 'Ukuran File maksimal 2MB',
+                ]);
+
                 $path = $request->file('foto_barang')->store('photos', config('filesystems.default'));
             }
 
@@ -93,7 +131,7 @@ class LaporanController extends Controller
      */
     public function show($id)
     {
-        $laporan = Laporan::with(['users', 'barangs', 'komentars.users'])->findOrFail($id);
+        $laporan = Laporan::with(['users', 'barangs', 'komentars.users', 'klaims.users'])->findOrFail($id);
 
         // laporan.show means it looking for views/laporan/show.blade.php
         // TODO: define the view route according to frontend inside views/
@@ -110,6 +148,7 @@ class LaporanController extends Controller
             abort(403, 'Anda Tidak Memiliki Akses ke Laporan ini');
         }
 
+        $laporan = $laporan->load('barangs');
 
         // laporan.edit means it looking for views/laporan/edit.blade.php
         // TODO: define the view route according to frontend inside views/
@@ -128,37 +167,49 @@ class LaporanController extends Controller
 
 
         $validated = $request->validate([
-            'kategori_laporan' => 'sometimes|in:lost,found',
-            'deskripsi' => 'sometimes|string',
+            'nama_barang' => 'nullable|string',
+            'kategori_laporan' => 'nullable|in:lost,found',
+            'deskripsi' => 'nullable|string',
+            'lokasi' => 'nullable|string',
+            'foto_barang' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+        ], [
+            'foto_barang.image' => 'File yang anda Upload tidak valid, hanya boleh upload gambar',
+            'foto_barang.mimes' => 'Format Gambar tidak didukung',
+            'foto_barang.max' => 'Ukuran File maksimal 2MB',
         ]);
+
+        // foto_barang is optional, if it exist and not null then store into storage and get the path
+        if ($request->hasFile('foto_barang')) {
+            // Delete the old file if it exists
+            if ($laporan->foto_barang) {
+                Storage::delete($laporan->foto_barang);
+            }
+
+            $validated['foto_barang'] = $request->file('foto_barang')->store('photos', config('filesystems.default'));
+        }
 
         // start update operation
         $laporan->update($validated);
 
         // TODO: define the redirect route according to frontend inside views/
-        return redirect()->route('items.detail', $laporan->id_laporan)->with('status', 'Laporan Berhasil diperbarui!');
+        return redirect()->route('laporan.detail', $laporan->id_laporan)->with('status', 'Laporan Berhasil diperbarui!');
     }
 
     /**
-     * Only Update the status to either 'active' or 'resolved'
+     * Only Update the status to 'resolved'
      */
-    public function updateStatus(Request $request, Laporan $laporan)
+    public function resolveStatus(Laporan $laporan)
     {
         // Validate that the user who update the laporan is the owner of the laporan
         if ($laporan->fk_id_user !== Auth::id()) {
             abort(403, 'Anda Tidak Memiliki Akses ke Laporan ini');
         }
 
-
-        $validated = $request->validate([
-            'status_laporan' => 'required',
-        ]);
-
         // start update operation
-        $laporan->update($validated);
+        $laporan->update(['status_laporan' => 'resolved']);
 
         // TODO: define the redirect route according to frontend inside views/
-        return redirect()->route('items.detail', $laporan->id_laporan)->with('status', 'Status Laporan Berhasil diperbarui!');
+        return redirect()->route('laporan.detail', $laporan->id_laporan)->with('status', 'Status Laporan Berhasil diperbarui!');
     }
 
     /**

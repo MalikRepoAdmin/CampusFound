@@ -1,6 +1,6 @@
 <header class="navbar">
     <div class="container nav-content">
-        <a href="/beranda" class="logo">
+        <a href="/tentang-kami" class="logo">
             <div class="logo-icon">
                 <i data-lucide="compass"></i>
             </div>
@@ -28,14 +28,14 @@
                 <div class="profile-dropdown">
                     <input type="checkbox" id="profile-toggle-chk" class="nav-checkbox-gate">
                     <label for="profile-toggle-chk" class="profile-trigger">
-                        <img src="https://ui-avatars.com/api/?name=User" alt="Profile" class="profile-img">
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->nama) }}&length=1" alt="Profile" class="profile-img">
                         <i data-lucide="chevron-down" class="icon-sm"></i>
                     </label>
 
                     <div class="dropdown-menu">
-                        <a href="/profile"><i data-lucide="user" class="icon-sm"></i> Profil Saya</a>
+                        <a href="{{ route('profile') }}"><i data-lucide="user" class="icon-sm"></i> Profil Saya</a>
                         <hr class="dropdown-divider">
-                        <a href="/logout" class="text-danger"><i data-lucide="log-out" class="icon-sm"></i> Keluar</a>
+                        <a href="{{ route('logout') }}" class="text-danger"><i data-lucide="log-out" class="icon-sm"></i> Keluar</a>
                     </div>
                 </div>
             </div>

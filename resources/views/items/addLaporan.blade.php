@@ -6,10 +6,8 @@
     <title>CampusFound |Tambah Laporan</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/addLaporan.css') }}">
     <script src="https://unpkg.com/lucide@latest"></script>
-   <style>
-    {!! file_get_contents(resource_path('css/addLaporan.css')) !!}
-    </style>
 </head>
 <body>
 
@@ -94,11 +92,11 @@
                     <div class="upload-area" id="drop-zone" style="border: 2px dashed var(--slate-300); padding: 20px; text-align: center; border-radius: 8px; cursor: pointer; transition: background 0.2s;">
                         
                         <!-- Input file tersembunyi -->
-                        <input type="file" id="file-input" name="foto_barang" accept="image/jpeg, image/png" style="display: none;">
+                        <input type="file" id="file-input" name="foto_barang" accept="image/jpeg, image/png, image/jpg" style="display: none;">
                         
                         <i data-lucide="camera" style="width: 40px; height: 40px; color: var(--primary); margin-bottom: 12px;"></i>
                         <p style="font-size: 14px; font-weight: 700; color: var(--slate-900);" id="upload-text">Klik atau Tarik Foto ke Sini</p>
-                        <span style="font-size: 11px; color: var(--slate-500);">Mendukung JPG, PNG (Maks. 2MB)</span>
+                        <span style="font-size: 11px; color: var(--slate-500);">Mendukung jpg, png, jpeg (Maks. 2MB)</span>
                         
                         @error('foto_barang')
                         <span style="color: red; font-size: 12px; display: block; margin-top: 5px;">{{ $message }}</span>

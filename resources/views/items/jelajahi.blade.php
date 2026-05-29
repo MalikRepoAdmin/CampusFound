@@ -50,18 +50,18 @@
         <!-- Card Temuan (Ditandai dengan data-type="temuan") -->
         @forelse($laporans as $laporan)
             <!-- Perhatikan penambahan ->barangs pada data-category dan data-location -->
-            <div class="card item-card" 
-                 data-type="{{ $laporan->kategori_laporan }}" 
-                 data-category="{{ $laporan->barangs->kategori_barang ?? '' }}" 
+            <div class="card item-card"
+                 data-type="{{ $laporan->kategori_laporan }}"
+                 data-category="{{ $laporan->barangs->kategori_barang ?? '' }}"
                  data-location="{{ $laporan->barangs->lokasi ?? '' }}"
                  style="{{ $laporan->kategori_laporan == 'lost' ? 'border-color: #ffe4e6;' : '' }}">
-                
+
                 <div class="card-img-box" style="position: relative; width: 100%; height: 200px; background-color: #f8fafc; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-    
+
                     @if(isset($laporan->barangs) && $laporan->barangs->foto_barang)
                         {{-- TAMPILKAN FOTO ASLI JIKA USER MENGUNGGAH FOTO --}}
-                        <img src="{{ Storage::url($laporan->barangs->foto_barang) }}" 
-                             alt="{{ $laporan->barangs->nama_barang }}" 
+                        <img src="{{ asset('storage/' . $laporan->barangs->foto_barang) }}"
+                             alt="{{ $laporan->barangs->nama_barang }}"
                              style="width: 100%; height: 100%; object-fit: cover;">
                     @else
                         {{-- TAMPILKAN PLACEHOLDER CANTIK JIKA FOTO NULL (KOSONG) --}}
@@ -76,13 +76,29 @@
                             <span style="font-size: 12px; font-weight: 500; color: #94a3b8; font-family: 'Plus Jakarta Sans', sans-serif;">Tidak ada foto</span>
                         </div>
                     @endif
-                    
-                    {{-- BADGE KATEGORI LAPORAN (TETAP DI ATAS GAMBAR) --}}
-                    @if($laporan->kategori_laporan == 'found')
-                        <div class="badge badge-blue">Temuan</div>
-                    @else
-                        <div class="badge badge-rose">Dicari</div>
-                    @endif
+
+                    <div class="badge-wrapper" style="position: absolute; top: 12px; left: 12px; display: flex; flex-direction: row; gap: 6px; items-align: center; z-index: 10;">
+
+                        {{-- Badge Utama: Temuan / Dicari --}}
+                        @if($laporan->kategori_laporan == 'found')
+                            {{-- Kita paksa posisinya jadi static dan hilangkan margin/top/left bawaan CSS lamamu --}}
+                            <div class="badge badge-blue" style="position: static !important; top: auto !important; left: auto !important; margin: 0 !important;">
+                                Temuan
+                            </div>
+                        @else
+                            <div class="badge badge-rose" style="position: static !important; top: auto !important; left: auto !important; margin: 0 !important;">
+                                Dicari
+                            </div>
+                        @endif
+
+                        {{-- Badge : Resolved --}}
+                        @if(isset($laporan->status_laporan) && $laporan->status_laporan == 'resolved')
+                            <div class="badge badge-success" style="position: static !important; top: auto !important; left: auto !important; margin: 0 !important; background-color: #10b981; color: white; display: flex; align-items: center; gap: 4px; padding: 4px 8px; border-radius: 4px;">
+                                <i data-lucide="check-circle" style="width: 14px; height: 14px;"></i>
+                                <span style="font-size: 9px; font-weight: 600; text-transform: uppercase; line-height: 1;">Resolved</span>
+                            </div>
+                        @endif
+                    </div>
                 </div>
 
                 <div class="card-content" style="padding: 16px; text-align: left;">
@@ -90,7 +106,7 @@
                     <h3 class="card-title" style="color: #1e293b; font-size: 16px; font-weight: 700; margin-bottom: 8px; display: block;">
                         {{ $laporan->barangs->nama_barang ?? 'Nama Barang Tidak Ditemukan' }}
                     </h3>
-                    
+
                     {{-- Ambil lokasi dari relasi --}}
                     <div class="card-loc" style="color: #475569; font-size: 13px; display: flex; align-items: center; gap: 6px; margin-bottom: 12px;">
                         @if($laporan->kategori_laporan == 'found')
@@ -100,12 +116,12 @@
                         @endif
                         <span style="color: #475569;">{{ $laporan->barangs->lokasi ?? 'Lokasi Tidak Ditemukan' }}</span>
                     </div>
-                    
+
                     <div class="card-footer" style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 12px;">
                         <span class="card-time" style="color: #94a3b8; font-size: 12px;">
                             {{ $laporan->created_at->diffForHumans() }}
                         </span>
-                        
+
                         @if($laporan->kategori_laporan == 'found')
                             <a href="{{ route('laporan.detail', ['id' => $laporan->id_laporan]) }}" class="btn-view btn-view-blue">
                                 LIHAT <i data-lucide="arrow-right" style="width: 12px;"></i>
@@ -175,7 +191,7 @@
 
         // 1. Ambil status tab aktif dari parameter URL (?tab=lost), default ke 'found'
         const urlParams = new URLSearchParams(window.location.search);
-        let currentTab = urlParams.get('tab') || "found"; 
+        let currentTab = urlParams.get('tab') || "found";
 
         // 2. Sinkronisasikan class 'active' pada tombol tab HTML sesuai parameter URL
         tabs.forEach(tab => {
@@ -196,7 +212,7 @@
 
                 // Cek apakah kartu cocok dengan tab yang aktif saat ini
                 const matchesTab = cardType === currentTab;
-                
+
                 // Cek apakah kartu cocok dengan kategori yang dipilih (jika kosong, anggap semua cocok)
                 const matchesCategory = selectedCategory === "" || cardCategory === selectedCategory;
 
@@ -216,7 +232,7 @@
                 this.classList.add("active");
 
                 currentTab = this.getAttribute("data-tab");
-                
+
                 // Perbarui URL browser tanpa reload agar pagination mengingat tab pilihan
                 const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?tab=' + currentTab;
                 window.history.pushState({ path: newUrl }, '', newUrl);

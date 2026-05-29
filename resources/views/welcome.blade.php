@@ -1,50 +1,35 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Selamat Datang di CampusFound</title>
+<link rel="stylesheet" href="{{ asset('css/welcome.css') }}">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<title>CampusFound</title>
+<script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- fontt -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- ikonnn -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+<nav>
+    <a href="#" class="logo">Campus<span>Found.</span></a>
+    <div class="nav-actions">
+        <a href="{{ route('login') }}" class="btn-login">Masuk</a>
+        <a href="{{ route('register') }}" class="btn-register">Daftar Akun</a>
+    </div>
+</nav>
 
-    <style>
-        {!! file_get_contents(resource_path('css/welcome.css')) !!}
-    </style>
-</head>
-<body>
+<section class="hero">
+    <div class="hero-content">
+        <div class="badge">🚀 Solusi Kehilangan dan Penemuan Barang Kampus</div>
 
-    <nav>
-        <a href="#" class="logo">Campus<span>Found.</span></a>
-        <div class="nav-actions">
-            <a href="/login" class="btn-login">Masuk</a>
-            <a href="/register" class="btn-register">Daftar Akun</a>
+        <h1 class="hero-title">
+            Temukan Barangmu yang Hilang atau Tertinggal di <span>CampusFound.</span>
+        </h1>
+
+        <p class="hero-p">
+            Platform digital sebagai media untuk saling membantu menemukan barang yang hilang atau melaporkan temuan di lingkungan kampus.
+        </p>
+
+        <div class="cta-group">
+            <a href="{{ route('login') }}" class="btn-main">Mulai Sekarang</a>
         </div>
-    </nav>
+    </div>
+</section>
+<script>
 
-    <section class="hero">
-        <div class="hero-content">
-            <div class="badge">🚀 Solusi Kehilangan Barang Kampus</div>
+    lucide.createIcons();
 
-            <h1 class="hero-title">
-                Temukan Barangmu yang Hilang di <span>CampusFound.</span>
-            </h1>
-
-            <p class="hero-p">
-                Platform digital khusus mahasiswa untuk saling membantu menemukan barang yang hilang atau melaporkan temuan di lingkungan kampus secara aman dan terverifikasi.
-            </p>
-
-            <div class="cta-group">
-                <a href="/login" class="btn-main">Mulai Sekarang</a>
-            </div>
-
-        </div>
-    </section>
-
-    <script>
-        lucide.createIcons();
-    </script>
-</body>
-</html>
+</script>

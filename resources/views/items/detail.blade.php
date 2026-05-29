@@ -1,12 +1,20 @@
 @extends('layouts.app')
-@if(session('success_klaim'))
-    @include('items.success')
-@endif
 
 @section('title', 'CampusFound | Detail')
 
 @section('content')
 <main class="content-wrapper">
+    @if(session('success_klaim'))
+        @include('items.success')
+        <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const modal = document.getElementById('modalKlaim');
+            if (modal) {
+                modal.classList.add('active');
+            }
+        });
+    </script>
+    @endif
     <div class="detail-grid">
         <section class="image-section">
             <div class="sticky-container">
@@ -27,20 +35,7 @@
                     @endif
                 </div>
                 
-                {{-- DAFTAR THUMBNAIL DI BAWAHNYA --}}
-                <div class="thumbnail-list">
-                    <div class="thumb active" style="background-color: #f8fafc; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                        @if(isset($laporan->barangs) && $laporan->barangs->foto_barang)
-                            <img src="{{ asset('storage/' . $laporan->barangs->foto_barang) }}">
-                        @else
-                            @if($laporan->kategori_laporan == 'found')
-                                <i data-lucide="package" style="width: 20px; height: 20px; color: #cbd5e1;"></i>
-                            @else
-                                <i data-lucide="search" style="width: 20px; height: 20px; color: #cbd5e1;"></i>
-                            @endif
-                        @endif
-                    </div>
-                </div>
+
             </div>
         </section>
 
@@ -68,9 +63,12 @@
                 <p>{{ $laporan->deskripsi }}</p>
             </div>
 
+            <!-- Pelapor Card -->
             <div class="reporter-card">
                 <div class="reporter-content">
-                    <div class="avatar-circle">{{ Str::of($laporan->users->nama)->words(2, '')->explode(' ')->map(fn($w) => Str::substr($w, 0, 1))->implode('') }}</div>
+                    <div class="avatar-circle">
+                        {{ Str::of($laporan->users->nama)->words(2, '')->explode(' ')->map(fn($w) => Str::substr($w, 0, 1))->implode('') }}
+                    </div>
                     <div class="reporter-text">
                         <small>DILAPORKAN OLEH {{ $laporan->users->email }}</small>
                         <p>{{ $laporan->users->nama }}</p>
@@ -108,88 +106,76 @@
 
                 <!-- Kondisi: Tombol klaim hanya muncul jika status laporan adalah barang yang ditemukan (found) -->
                 @if($laporan->kategori_laporan === 'found')
-                    <button class="btn-outline" onclick="toggleModal()">
+                    <a class="btn-primary" href="{{ route('klaim', ['laporan' => $laporan]) }}">
                         Sampaikan Klaim
-                    </button>
+                    </a>
                 @endif
             </div>
-    </div>
+        </section>
 
-    <section class="comment-section">
-        <div class="comment-detail-grid">
-            <div class="comment-main-col">
-                <div class="comment-header-main">
-                    {{-- Menampilkan jumlah total komentar asli secara dinamis --}}
-                    <h3 class="comment-title">Diskusi <span>{{ $laporan->komentars->count() }}</span></h3>
-                </div>
+        <div class="claims-discussion-grid">
 
-                {{-- Form input komentar baru --}}
-                <div class="comment-input-area">
-                    {{-- Mengambil inisial nama user yang sedang login jika ada --}}
-                    <div class="avatar-user me">
-                        {{ auth()->check() ? Str::substr(auth()->user()->nama, 0, 1) : 'U' }}
-                    </div>
-                    <div class="input-wrapper">
-                        <form action="{{ route('komentar.store', ['id' => $laporan->id_laporan]) }}" method="POST">
-                            @csrf
-
-                            <textarea name="isi_komentar" placeholder="Tulis komentar..." rows="1"></textarea>
-                            <button type="submit" class="btn-send-minimal"><i data-lucide="send"></i></button>
-                        </form>
-                    </div>
-                </div>
-
-                <div class="comment-list" style="display: flex; flex-direction: column; gap: 16px; margin-top: 20px;">
-                    @forelse($laporan->komentars as $komentar)
-                        <div class="comment-item" style="display: flex; gap: 12px; align-items: flex-start;">
-                            {{-- Inisial nama pemberi komentar --}}
-                            <div class="avatar-user" style="flex-shrink: 0;">
-                                {{ isset($komentar->users) ? Str::substr($komentar->users->nama, 0, 1) : '?' }}
-                            </div>
-                            
-                            <div class="comment-bubble" style="background-color: #f8fafc; padding: 12px 16px; border-radius: 12px; flex-grow: 1;">
-                                <div class="comment-meta" style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px;">
-                                    <span class="user-name" style="font-weight: 700; color: #1e293b;">
-                                        {{ $komentar->users->nama ?? 'Anonim' }}
-                                    </span>
-                                    <span class="comment-time" style="color: #94a3b8; font-size: 12px;">
-                                        {{ $komentar->created_at->diffForHumans() }}
-                                    </span>
-                                </div>
-
-                                @if(auth()->check() && $komentar->fk_id_user === auth()->id())
-                                    {{-- Form menembak ke ID Laporan --}}
-                                    <form action="{{ route('komentar.delete', $laporan->id_laporan) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus komentar ini?')" style="display: inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        
-                                        {{-- Parameter Baru: Selundupkan ID Komentar di dalam input tersembunyi --}}
-                                        <input type="hidden" name="id_komentar" value="{{ $komentar->id_komentar }}">
-
-                                        <button type="submit" style="background: none; border: none; color: #ef4444; cursor: pointer; padding: 0; display: flex; align-items: center;" title="Hapus Komentar">
-                                            <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
-                                        </button>
-                                    </form>
+            @if($laporan->kategori_laporan == 'found' && $laporan->klaims->isNotEmpty())
+            <section class="klaim-section">
+                <h3 class="item-title">Klaim Barang:</h3>
+                @forelse($laporan->klaims as $klaim)
+                    <div class="claimer-card">
+                        <div class="claimer-content">
+                            <div class="image-box">
+                                @if(isset($klaim) && $klaim->foto_bukti)
+                                    <img src="{{ asset('storage/' . $klaim->foto_bukti) }}"
+                                         alt="{{ $klaim->laporans->barangs->nama_barang }}"
+                                         class="preview-img">
+                                @else
+                                    <div class="image-placeholder">
+                                        @if($klaim->laporans->kategori_laporan == 'found')
+                                            <i data-lucide="package"></i>
+                                        @else
+                                            <i data-lucide="search"></i>
+                                        @endif
+                                        <span>No Image</span>
+                                    </div>
                                 @endif
+                            </div>
 
-                                {{-- Teks isi komentar dari database --}}
-                                <p class="comment-text" style="color: #475569; font-size: 14px; margin: 0; line-height: 1.5;">
-                                    {{ $komentar->isi_komentar ?? $komentar->komentar }} 
-                                    {{-- Sesuaikan nama kolom di atas jika nama kolom teks Anda bukan 'isi_komentar' --}}
-                                </p>
+                            <div class="claimer-text">
+                                <small>{{ $klaim->ciri }}</small>
+                                <p>{{ $klaim->users->nama }}</p>
                             </div>
                         </div>
-                    @empty
-                        {{-- Tampilan jika belum ada komentar sama sekali --}}
-                        <div style="text-align: center; padding: 30px; color: #94a3b8; font-size: 14px;">
-                            <i data-lucide="message-square-dashed" style="width: 32px; height: 32px; margin-bottom: 8px; color: #cbd5e1;"></i>
-                            <p style="margin: 0;">Belum ada diskusi. Jadilah yang pertama berkomentar!</p>
-                        </div>
-                    @endforelse
-                </div>
-            </div>
 
-            <div class="comment-sidebar">
+                        @php
+                            // Clean and force the international country code format (62) if it starts with 0
+                            $phone = preg_replace('/^0/', '62', preg_replace('/[^0-9]/', '', $klaim->users->no_hp ?? ''));
+                            
+                            // Dynamic text template based on item context
+                            $message = rawurlencode(sprintf(
+                                "Halo %s, saya ingin menghubungi Anda terkait klaim saya pada laporan '%s' di CampusFound.",
+                                $klaim->users->nama,
+                                $laporan->barangs->nama_barang
+                            ));
+                        @endphp
+
+                        <div class="claimer-actions">
+                            @if(!empty($phone))
+                                <a href="https://wa.me/{{ $phone }}?text={{ $message }}" target="_blank" class="btn-contact-claimer">
+                                    <i data-lucide="phone" style="width: 1rem; height: 1rem;"></i>
+                                    Hubungi Pengeklaim
+                                </a>
+                            @else
+                                <button class="btn-contact-claimer" disabled style="opacity: 0.5; cursor: not-allowed;">
+                                    <i data-lucide="phone" style="width: 1rem; height: 1rem;"></i>
+                                    No. HP Tidak Ada
+                                </button>
+                            @endif
+                        </div>
+                    </div>
+                @empty
+                    @endforelse
+            </section>
+            @endif
+
+            <aside class="comment-sidebar">
                 <div class="sidebar-card">
                     <div class="illustration-box">
                         <img src="https://illustrations.popsy.co/amber/communication.svg" alt="Illustration">
@@ -203,22 +189,81 @@
                         </ul>
                     </div>
                 </div>
+            </aside>
+        </div>
+
+    </div> <section class="comment-section">
+        <div class="comment-header-main">
+            <h3 class="comment-title">Diskusi <span>{{ $laporan->komentars->count() }}</span></h3>
+        </div>
+
+        <div class="comment-input-area">
+            <div class="avatar-user me">
+                {{ auth()->check() ? Str::substr(auth()->user()->nama, 0, 1) : 'U' }}
             </div>
+            <div class="input-wrapper">
+                <form action="{{ route('komentar.store', ['id' => $laporan->id_laporan]) }}" method="POST">
+                    @csrf
+                    <textarea name="isi_komentar" placeholder="Tulis komentar..." rows="1"></textarea>
+                    <button type="submit" class="btn-send-minimal"><i data-lucide="send"></i></button>
+                </form>
+            </div>
+        </div>
+
+        <div class="comment-list" style="display: flex; flex-direction: column; gap: 16px; margin-top: 20px;">
+            @forelse($laporan->komentars as $komentar)
+                <div class="comment-item" style="display: flex; gap: 12px; align-items: flex-start;">
+                    <div class="avatar-user" style="flex-shrink: 0;">
+                        {{ isset($komentar->users) ? Str::substr($komentar->users->nama, 0, 1) : '?' }}
+                    </div>
+                    
+                    <div class="comment-bubble" style="background-color: #f8fafc; padding: 12px 16px; border-radius: 12px; flex-grow: 1;">
+                        <div class="comment-meta" style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px;">
+                            <span class="user-name" style="font-weight: 700; color: #1e293b;">
+                                {{ $komentar->users->nama ?? 'Anonim' }}
+                            </span>
+                            <span class="comment-time" style="color: #94a3b8; font-size: 12px;">
+                                {{ $komentar->created_at->diffForHumans() }}
+                            </span>
+                        </div>
+
+                        @if(auth()->check() && $komentar->fk_id_user === auth()->id())
+                            <form action="{{ route('komentar.delete', ['komentar' => $komentar]) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus komentar ini?')" style="display: inline;">
+                                @csrf
+                                @method('DELETE')
+                                <input type="hidden" name="id_komentar" value="{{ $komentar->id_komentar }}">
+                                <button type="submit" style="background: none; border: none; color: #ef4444; cursor: pointer; padding: 0; display: flex; align-items: center;" title="Hapus Komentar">
+                                    <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+                                </button>
+                            </form>
+                        @endif
+
+                        <p class="comment-text" style="color: #475569; font-size: 14px; margin: 0; line-height: 1.5;">
+                            {{ $komentar->isi_komentar ?? $komentar->komentar }} 
+                        </p>
+                    </div>
+                </div>
+            @empty
+                <div style="text-align: center; padding: 30px; color: #94a3b8; font-size: 14px;">
+                    <i data-lucide="message-square-dashed" style="width: 32px; height: 32px; margin-bottom: 8px; color: #cbd5e1;"></i>
+                    <p style="margin: 0;">Belum ada diskusi. Jadilah yang pertama berkomentar!</p>
+                </div>
+            @endforelse
         </div>
     </section>
 
-    <a href="https://wa.me/6285708935152?text=Halo%20CampusFound,%20saya%20butuh%20bantuan." class="fab-wa" target="_blank">
+    <a href="https://wa.me/6285904417152?text=Halo%20CampusFound,%20saya%20butuh%20bantuan." class="fab-wa" target="_blank">
         <i data-lucide="message-circle"></i>
     </a>
 </main>
 
 <script>
 // Fungsi showReplyForm telah dihapus karena fitur reply dinonaktifkan
-window.toggleModal = function() {
+{{-- window.toggleModal = function() {
     const modal = document.getElementById('modalKlaim');
     if (modal) {
         modal.classList.toggle('active');
     }
-}
+} --}}
 </script>
 @endsection
