@@ -1,58 +1,142 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistem Informasi Lost and Found Kampus
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistem Informasi Lost and Found Kampus merupakan aplikasi berbasis web yang dirancang untuk membantu mahasiswa dan civitas akademika dalam melaporkan, mencari, serta menemukan kembali barang yang hilang atau tertinggal di lingkungan kampus.
 
-## About Laravel
+Proyek ini dikembangkan sebagai solusi atas banyaknya laporan kehilangan dan penemuan barang yang selama ini disampaikan melalui grup WhatsApp kampus. Dengan menyediakan platform khusus, informasi dapat dikelola secara lebih terstruktur, mudah dicari, dan terdokumentasi dengan baik.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Anggota Kelompok
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+| No. | Nama | NIM | Peran |
+|:---:|---|---|---|
+| 1 | [Indah Ayu Astuti] | [254311002] | [Frontend/Presentation Layer] |
+| 2 | [Mohamad Malik Fajar Baihaqi] | [254311011] | [Backend/Bussiness Logic Layer] |
+| 3 | [Dodo Fansyuri Andrian] | [254311023] | [Backend/Data Layer] |
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Fitur Utama
 
-## Learning Laravel
+- **Autentikasi Pengguna** — Registrasi, login, dan logout.
+- **Laporan Barang Hilang** — Membuat laporan kehilangan barang di lingkungan kampus.
+- **Laporan Barang Temuan** — Melaporkan barang yang ditemukan atau tertinggal.
+- **Manajemen Laporan** — Mengelola laporan yang telah dibuat.
+- **Komentar dan Diskusi** — Memberikan komentar atau informasi tambahan pada setiap laporan.
+- **Pencarian dan Penelusuran** — Mencari serta melihat informasi laporan yang tersedia.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Teknologi yang Digunakan
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+| Teknologi | Kegunaan |
+|---|---|
+| PHP | Bahasa pemrograman backend |
+| Laravel 13 | Framework utama pengembangan aplikasi |
+| Blade Template | Rendering halaman frontend |
+| Bootstrap / CSS | Pengaturan tampilan dan layout antarmuka |
+| Eloquent ORM | Pengelolaan data dan relasi antarmodel |
+| Laravel Schema Builder | Pengelolaan struktur database melalui migration |
+| PHPUnit | Pengujian otomatis aplikasi |
+| MySQL | Sistem manajemen basis data |
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## Metode Pengembangan
 
-## Agentic Development
+Pengembangan aplikasi menggunakan metode **Software Development Life Cycle (SDLC) dengan model Waterfall**. Proses pengembangan dilakukan secara berurutan melalui tahapan berikut:
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+1. **Analisis Kebutuhan** — Mengidentifikasi permasalahan dan menentukan kebutuhan serta fitur sistem.
+2. **Perancangan Sistem** — Merancang alur aplikasi, struktur basis data, relasi antartabel, dan antarmuka pengguna.
+3. **Implementasi** — Mengembangkan backend menggunakan Laravel serta frontend menggunakan Blade Template dan CSS.
+4. **Pengujian** — Melakukan unit testing, integration testing, dan system testing.
+5. **Deployment** — Mempublikasikan aplikasi ke lingkungan deployment untuk demonstrasi dan evaluasi.
+
+## Pengujian
+
+Pengujian dilakukan secara bertahap menggunakan beberapa pendekatan:
+
+| Jenis Pengujian | Metode / Tools | Tujuan |
+|---|---|---|
+| Unit Testing | PHPUnit | Memastikan fungsi controller, model, dan relasi database berjalan sesuai kebutuhan. |
+| Integration Testing | Pengujian integrasi aplikasi | Memastikan frontend, route, controller, model, dan database dapat berinteraksi dengan benar. |
+| System Testing | Pengujian fungsional | Memastikan seluruh alur dan fitur aplikasi berjalan sesuai kebutuhan sistem. |
+
+## Pengembangan Selanjutnya
+
+Sistem ini memiliki potensi untuk dikembangkan lebih lanjut, tidak hanya sebagai platform pelaporan barang hilang dan temuan, tetapi juga sebagai sumber data untuk mendukung pengelolaan informasi di lingkungan kampus.
+
+Beberapa pengembangan yang dapat dipertimbangkan:
+
+- Dashboard statistik laporan barang hilang dan barang temuan.
+- Analisis lokasi yang paling sering menjadi tempat kehilangan atau penemuan barang.
+- Analisis kategori barang yang paling sering dilaporkan.
+- Riwayat penyelesaian laporan dan tingkat keberhasilan pengembalian barang.
+- Sistem notifikasi untuk laporan yang relevan.
+- Fitur verifikasi kepemilikan barang.
+
+Data yang dikumpulkan secara terstruktur dapat menjadi landasan pengembangan sistem analitik dan pendukung pengambilan keputusan (Decision Support System) di lingkungan kampus.
+
+## Instalasi dan Menjalankan Project
+
+### Persyaratan
+
+Pastikan perangkat telah memiliki:
+
+- PHP dengan versi yang kompatibel dengan Laravel 13.
+- Composer.
+- MySQL atau database lain yang didukung Laravel.
+- Git.
+
+### 1. Clone Repository
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/MalikRepoAdmin/CampusFound
+cd CampusFound
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 2. Install Dependencies
 
-## Contributing
+```bash
+composer install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 3. Konfigurasi Environment
 
-## Code of Conduct
+Salin file konfigurasi environment:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+cp .env.example .env
+```
 
-## Security Vulnerabilities
+Sesuaikan konfigurasi database pada file `.env`:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=lost_and_found
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-## License
+### 4. Generate Application Key
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+php artisan key:generate
+```
+
+### 5. Jalankan Database Migration
+
+```bash
+php artisan migrate
+```
+
+### 6. Jalankan Aplikasi
+
+```bash
+php artisan serve
+```
+
+Secara default, aplikasi dapat diakses melalui:
+
+http://127.0.0.1:8000
+
+
+---
+
+**Sistem Informasi Lost and Found Kampus**
+
+_Mengelola informasi barang hilang dan temuan secara terstruktur untuk lingkungan kampus yang lebih terorganisir._
