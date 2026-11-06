@@ -8,9 +8,9 @@ Proyek ini dikembangkan sebagai solusi atas banyaknya laporan kehilangan dan pen
 
 | No. | Nama | NIM | Peran |
 |:---:|---|---|---|
-| 1 | [Indah Ayu Astuti] | [254311002] | [Frontend/Presentation Layer] |
-| 2 | [Mohamad Malik Fajar Baihaqi] | [254311011] | [Backend/Bussiness Logic Layer] |
-| 3 | [Dodo Fansyuri Andrian] | [254311023] | [Backend/Data Layer] |
+| 1 | Indah Ayu Astuti | 254311002 | Frontend/Presentation Layer |
+| 2 | Mohamad Malik Fajar Baihaqi | 254311011 | Backend/Bussiness Logic Layer |
+| 3 | Dodo Fansyuri Andrian | 254311023 | Backend/Data Layer |
 
 ## Fitur Utama
 
